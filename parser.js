@@ -4,8 +4,6 @@ class Memory {
   constructor() {
     this.lines = [];
     this.chain = [];
-    
-    this.indent = 0;
   }
 
   push(number, line, indent) {
@@ -48,15 +46,25 @@ function parseLine(number, line, memory) {
   line = line.replace(/^\s*/, '');
   const command = line.split(' ')[0];
   const parameters = line
-    .replace(new RegExp(`^${command} `), '')
+    .slice(command.length + 1)
     .split(/\s*,\s*/)
-    .map(parseExpression);
+    .map(parseExpression)
+    .filter(expr => expr);
 
-  memory.push(number, { command, parameters }, indent);
+  const lineData = { command };
+  if (parameters && parameters.length) {
+    lineData['parameters'] = parameters;
+  }
+
+  memory.push(number, lineData, indent);
 }
 
 function parseExpression(expr) {
   expr = expr.trim();
+
+  if (!expr) {
+    return;
+  }
   
   let match;
   if (match = /(\d*\.?\d*)/.exec(expr)) {

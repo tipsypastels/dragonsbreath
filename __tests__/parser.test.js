@@ -50,6 +50,29 @@ describe(parse, () => {
       }],
     }]);
   });
+
+  test('two levels of nesting', () => {
+    expectParse("a\n  b\n    c", [{
+      command: 'a',
+      children: [{
+        command: 'b',
+        children: [{ command: 'c' }],
+      }],
+    }]);
+  });
+
+  test('two levels of nesting, jumping back and forth between levels', () => {
+    expectParse("a\n  b\n    c\n  b2", [{
+      command: 'a',
+      children: [
+        {
+          command: 'b',
+          children: [{ command: 'c' }],
+        },
+        { command: 'b2' },
+      ],
+    }]);
+  });
 });
 
 describe(parseExpression, () => {

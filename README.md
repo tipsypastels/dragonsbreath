@@ -48,3 +48,7 @@ So, as you may have gleaned from that, some intended features of the language:
 - Conditionals are inline.
 - You can use a command like `checkplayergender` inside an if statement.
 - Certain commands like `lock` have logical pairs - if you indent the commands following lock (referred to as "passing commands as children to `lock`"), it will automatically add the `release` after the commands passed.
+
+## Running Tests
+
+Run the tests with `yarn test`.
