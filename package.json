@@ -1,0 +1,12 @@
+{
+  "name": "gnos-lang",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "test": "yarn jest"
+  },
+  "dependencies": {
+    "jest": "^24.9.0"
+  }
+}
