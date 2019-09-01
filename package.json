@@ -1,5 +1,6 @@
 {
-  "name": "gnos-lang",
+  "name": "dragonsbreath",
+  "author": "tipsypastels",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
