@@ -66,16 +66,16 @@ describe(parse, () => {
   });
 
   describe('parameters', () => {
-    // test('a command with multiple parameters', () => {
-    //   expectParse('x 1, 2, 3', [{
-    //     command: 'x',
-    //     parameters: [
-    //       { type: 'number', value: 1 },
-    //       { type: 'number', value: 2 },
-    //       { type: 'number', value: 3 },
-    //     ],
-    //   }]);
-    // });
+    test('a command with multiple parameters', () => {
+      expectParse('x 1, 2, 3', [{
+        command: 'x',
+        parameters: [
+          { type: 'number', value: 1 },
+          { type: 'number', value: 2 },
+          { type: 'number', value: 3 },
+        ],
+      }]);
+    });
 
     test('strings with commas should not be splitters', () => {
       expectParse('x 1, 2, "a, b"', [{
