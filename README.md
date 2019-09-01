@@ -2,7 +2,7 @@
 
 *(Note that this project is not yet ready for use. Contributions welcome~)*
 
-For a lot of reasons, I dislike scripting in Pokeemerald. The rigid and unintuitive syntax makes programming much more error-prone, as well as taking longer. I dreaded making such scripts for my hack [Pokémon Gnosis](https://github.com/tipsypastels/pokegnosis), which includes many large cutscenes and events. Instead, I decided to make a simpler and more pleasant language, along with a transpiler (compiler? not sure what the right term is) that converts it into pokeemerald's scripting language.
+For a lot of reasons, I dislike scripting in Pokeemerald. The rigid and unintuitive syntax makes programming much more error-prone, as well as taking way longer than it should for a decent-sized script. Instead, I decided to make a simpler and more pleasant language for use in my hack [Pokemon Gnosis](https://github.com/tipsypastels/pokegnosis) and any others who want to use it. It comes with with a transpiler (compiler? not sure what the right term is) that converts it into pokeemerald's scripting language.
 
 Dragonsbreath syntax is exceedingly simple. Wherever possible it attempts to be completely English-like.
 ```text
