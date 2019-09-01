@@ -67,14 +67,22 @@ function parseExpression(expr) {
   }
   
   let match;
-  if (match = /(\d*\.?\d*)/.exec(expr)) {
+  if (match = /^(\d*\.?\d*)$/.exec(expr)) {
     return { type: 'number', value: Number(match[0]) };
   } else if (match = /^"(.*)"$/.exec(expr)) {
     return { type: 'string', value: expr.slice(1, expr.length - 1) };
   } else if (match = /^[a-z0-9]+$/i.exec(expr)) {
     return { type: 'token', value: expr };
+  } else if (match = /^(.*)\s*(?:==|is|eq)\s*(.*)$/.exec(expr)) {
+    console.log(`${expr} matched equality`)
+    console.log(match)
+    return { 
+      type: 'equality', 
+      left: parseExpression(match[1]),
+      right: parseExpression(match[2])
+    };
   } else {
-    throw new SyntaxError(`Could not parse expression ${expr}`)
+    throw new SyntaxError(`Could not parse expression ${expr}`);
   }
 }
 

@@ -95,4 +95,12 @@ describe(parseExpression, () => {
   test('a number with a trailing decimal', () => {
     expectExpr('2.', { type: 'number', value: 2 });
   });
+
+  test('equality', () => {
+    expectExpr('a == b', {
+      type: 'equality',
+      left: { type: 'token', value: 'a' },
+      right: { type: 'token', value: 'b' },
+    });
+  });
 });
