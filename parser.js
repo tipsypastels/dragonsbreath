@@ -72,6 +72,17 @@ function parseExpression(expr) {
     match = regex.exec(expr);
     return !!match;
   }
+
+  function comparison(...symbols) {
+    return new RegExp(`^(.*)\s*(?:${symbols.join('|')})\s*(.*)$`);
+  }
+
+  function comparisonResult(type) {
+    return { type, 
+      left: parseExpression(match[1]), 
+      right: parseExpression(match[2]), 
+    };
+  }
   
   switch(true) {
     case matching(/^(\d*\.?\d*)$/): {
@@ -86,12 +97,28 @@ function parseExpression(expr) {
       return { type: 'token', value: expr };
     }
 
-    case matching(/^(.*)\s*(?:==|is|eq)\s*(.*)$/): {
-      return { 
-        type: 'equality', 
-        left: parseExpression(match[1]),
-        right: parseExpression(match[2])
-      };
+    case matching(comparison('==', '===', 'is', 'eq')): {
+      return comparisonResult('equality');
+    }
+
+    case matching(comparison('!=', '!==', 'isnt', 'neq')): {
+      return comparisonResult('inequality');
+    }
+
+    case matching(comparison('<', 'lt')): {
+      return comparisonResult('lessThan');
+    }
+
+    case matching(comparison('>', 'gt')): {
+      return comparisonResult('greaterThan');
+    }
+
+    case matching(comparison('<=', 'le')): {
+      return comparisonResult('lessThanOrEq');
+    }
+
+    case matching(comparison('>=', 'ge')): {
+      return comparisonResult('greaterThanOrEq');
     }
 
     default: {
