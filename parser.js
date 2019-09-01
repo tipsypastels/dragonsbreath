@@ -67,22 +67,36 @@ function parseExpression(expr) {
   }
   
   let match;
-  if (match = /^(\d*\.?\d*)$/.exec(expr)) {
-    return { type: 'number', value: Number(match[0]) };
-  } else if (match = /^"(.*)"$/.exec(expr)) {
-    return { type: 'string', value: expr.slice(1, expr.length - 1) };
-  } else if (match = /^[a-z0-9]+$/i.exec(expr)) {
-    return { type: 'token', value: expr };
-  } else if (match = /^(.*)\s*(?:==|is|eq)\s*(.*)$/.exec(expr)) {
-    console.log(`${expr} matched equality`)
-    console.log(match)
-    return { 
-      type: 'equality', 
-      left: parseExpression(match[1]),
-      right: parseExpression(match[2])
-    };
-  } else {
-    throw new SyntaxError(`Could not parse expression ${expr}`);
+
+  function type(regex) {
+    match = regex.exec(expr);
+    return !!match;
+  }
+  
+  switch(true) {
+    case type(/^(\d*\.?\d*)$/): {
+      return { type: 'number', value: Number(match[0]) };
+    }
+
+    case type(/^"(.*)"$/): {
+      return { type: 'string', value: expr.slice(1, expr.length - 1) };
+    }
+
+    case type(/^[a-z0-9]+$/i): {
+      return { type: 'token', value: expr };
+    }
+
+    case type(/^(.*)\s*(?:==|is|eq)\s*(.*)$/): {
+      return { 
+        type: 'equality', 
+        left: parseExpression(match[1]),
+        right: parseExpression(match[2])
+      };
+    }
+
+    default: {
+      throw new SyntaxError(`Could not parse expression ${expr}`);
+    }
   }
 }
 
