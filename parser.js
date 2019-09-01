@@ -91,6 +91,10 @@ function parseExpression(expr) {
   }
   
   switch(true) {
+    case matching(/^it$/): {
+      return { type: 'it', value: 'it' };
+    }
+
     case matching(/^(\d*\.?\d*)$/): {
       return { type: 'number', value: Number(match[0]) };
     }
@@ -108,27 +112,27 @@ function parseExpression(expr) {
     }
 
     case matching(comparison('==', '===', 'is', 'eq')): {
-      return comparisonResult('equality');
+      return comparisonResult('eq');
     }
 
-    case matching(comparison('!=', '!==', 'isnt', 'neq')): {
-      return comparisonResult('inequality');
-    }
+    // case matching(comparison('!=', '!==', 'isnt', 'neq')): {
+    //   return comparisonResult('inequality');
+    // }
 
     case matching(comparison('<', 'lt')): {
-      return comparisonResult('lessThan');
+      return comparisonResult('lt');
     }
 
     case matching(comparison('>', 'gt')): {
-      return comparisonResult('greaterThan');
+      return comparisonResult('gt');
     }
 
     case matching(comparison('<=', 'le')): {
-      return comparisonResult('lessThanOrEq');
+      return comparisonResult('le');
     }
 
     case matching(comparison('>=', 'ge')): {
-      return comparisonResult('greaterThanOrEq');
+      return comparisonResult('ge');
     }
 
     default: {

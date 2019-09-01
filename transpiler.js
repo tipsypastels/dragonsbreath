@@ -73,10 +73,19 @@ function transpileBuiltin(line, number, parentLine, externals) {
 }
 
 function transpileParameter(parameter) {
-  if (parameter.type === 'string') {
-    return `"${parameter.value}"`;
+  switch(parameter.type) {
+    case 'string': {
+      return `"${parameter.value}"`;
+    }
+
+    case 'it': {
+      return 'VAR_RESULT';
+    }
+
+    default: {
+      return parameter.value;
+    }
   }
-  return parameter.value;
 }
 
 function transpileDelegated({ command, parameters, children }) {
@@ -109,11 +118,11 @@ function transpile(lines, parentLine = null, externals = new Externals()) {
 
 console.log(transpile(parse(`
 script MyScript
-  say "Hello world.\\n"
-  say "xdddd$"
-  
-script MyOtherScript
-  say "Ur gay.$"
+  checkplayergender
+  if it is FEMALE
+    hello
+  else
+    goodbye
 `)));
 
 module.exports = { transpile };

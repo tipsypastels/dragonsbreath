@@ -91,6 +91,10 @@ describe(parse, () => {
 });
 
 describe(parseExpression, () => {
+  test('it', () => {
+    expectExpr('it', { type: 'it', value: 'it' });
+  });
+
   test('a string', () => {
     expectExpr('"hello, world"', { type: 'string', value: 'hello, world' });
   });
@@ -129,7 +133,7 @@ describe(parseExpression, () => {
 
   test('equality', () => {
     expectExpr('a == b', {
-      type: 'equality',
+      type: 'eq',
       left: { type: 'token', value: 'a' },
       right: { type: 'token', value: 'b' },
     });
