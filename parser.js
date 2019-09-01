@@ -68,25 +68,25 @@ function parseExpression(expr) {
   
   let match;
 
-  function type(regex) {
+  function matching(regex) {
     match = regex.exec(expr);
     return !!match;
   }
   
   switch(true) {
-    case type(/^(\d*\.?\d*)$/): {
+    case matching(/^(\d*\.?\d*)$/): {
       return { type: 'number', value: Number(match[0]) };
     }
 
-    case type(/^"(.*)"$/): {
+    case matching(/^"(.*)"$/): {
       return { type: 'string', value: expr.slice(1, expr.length - 1) };
     }
 
-    case type(/^[a-z0-9]+$/i): {
+    case matching(/^[a-z0-9]+$/i): {
       return { type: 'token', value: expr };
     }
 
-    case type(/^(.*)\s*(?:==|is|eq)\s*(.*)$/): {
+    case matching(/^(.*)\s*(?:==|is|eq)\s*(.*)$/): {
       return { 
         type: 'equality', 
         left: parseExpression(match[1]),
