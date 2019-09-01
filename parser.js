@@ -43,11 +43,16 @@ function parseLine(number, line, memory) {
 
   const indent = getIndentDepth(line);
 
+  const strComma = `${Math.random()}___StrComma___`;
+
   line = line.replace(/^\s*/, '');
   const command = line.split(' ')[0];
   const parameters = line
     .slice(command.length + 1)
+    // we don't want to break the quotes inside strings
+    .replace(/"(.+?),(.+?)"/, (_, p1, p2) => `"${p1}${strComma}${p2}"`)
     .split(/\s*,\s*/)
+    .map(word => word.replace(strComma, ','))
     .map(parseExpression)
     .filter(expr => expr);
 
@@ -57,6 +62,7 @@ function parseLine(number, line, memory) {
   }
 
   memory.push(number, lineData, indent);
+  return lineData;
 }
 
 function parseExpression(expr) {
@@ -65,7 +71,7 @@ function parseExpression(expr) {
   if (!expr) {
     return;
   }
-  
+
   let match;
 
   function matching(regex) {
@@ -91,6 +97,10 @@ function parseExpression(expr) {
 
     case matching(/^"(.*)"$/): {
       return { type: 'string', value: expr.slice(1, expr.length - 1) };
+    }
+    
+    case matching(/^[A-Zx0-9_]+$/): {
+      return { type: 'constant', value: expr };
     }
 
     case matching(/^[a-z0-9]+$/i): {
