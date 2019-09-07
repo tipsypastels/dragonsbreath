@@ -88,4 +88,4 @@ const BUILTINS = {
   }
 };
 
-module.exports = BUILTINS;
+export default BUILTINS;

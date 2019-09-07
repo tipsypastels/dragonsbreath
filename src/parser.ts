@@ -1,14 +1,31 @@
-const INDENT = '  ';
+import Line, { Parameter } from "./line";
+import { tryBundleLines } from "./bundling_logic";
+import { dig } from "./utils";
 
-class Memory {
+export const INDENT = '  ';
+
+export type Chain = ({ lineNo: number, line: Line, indent: number })[];
+
+export class Memory {
+  lines: Line[];
+  chain: Chain;
+
   constructor() {
     this.lines = [];
     this.chain = [];
   }
 
-  push(number, line, indent) {
+  push(lineNo: number, line: Line, indent: number) {
+    let pushToChain = true;
+
     if (indent < 1) {
-      this.lines.push(line);
+      const lastLine = dig(this.chain[this.chain.length - 1], 'line');
+
+      if (tryBundleLines(lastLine, line)) {
+        pushToChain = false;
+      } else {
+        this.lines.push(line);
+      }
     } else {
       // find the last item in the chain whose indent is one less than this one and add it as a child
       const parentLine = this.chain.reverse().find(chainItem => {
@@ -16,14 +33,16 @@ class Memory {
       });
 
       if (!parentLine) {
-        throw new SyntaxError(`Unexpected indent on line ${number}`);
+        throw new SyntaxError(`Unexpected indent on line ${lineNo}`);
       }
 
       parentLine.line.children || (parentLine.line.children = []);
       parentLine.line.children.push(line);
     }
 
-    this.chain.push({ number, line, indent });
+    if (pushToChain) {
+      this.chain.push({ lineNo, line, indent });
+    }
   }
 
   get length() {
@@ -31,23 +50,23 @@ class Memory {
   }
 }
 
-function getIndentDepth(line) {
-  return /^(\s*)/.exec(line)[0]
+function getIndentDepth(lineText: string) {
+  return /^(\s*)/.exec(lineText)[0]
     .length / INDENT.length;
 }
 
-function parseLine(number, line, memory) {
-  if (line.length === 0 || /^[^\S]\n?$/.exec(line)) {
+export function parseLine(lineNo: number, lineText: string, memory: Memory) {
+  if (lineText.length === 0 || /^[^\S]\n?$/.exec(lineText)) {
     return;
   }
 
-  const indent = getIndentDepth(line);
+  const indent = getIndentDepth(lineText);
 
   const strComma = `${Math.random()}___StrComma___`;
 
-  line = line.replace(/^\s*/, '');
-  const command = line.split(' ')[0];
-  const parameters = line
+  lineText = lineText.replace(/^\s*/, '');
+  const command = lineText.split(' ')[0];
+  const parameters = lineText
     .slice(command.length + 1)
     // we don't want to break the quotes inside strings
     .replace(/"(.+?),(.+?)"/, (_, p1, p2) => `"${p1}${strComma}${p2}"`)
@@ -56,16 +75,19 @@ function parseLine(number, line, memory) {
     .map(parseExpression)
     .filter(expr => expr);
 
-  const lineData = { command };
-  if (parameters && parameters.length) {
-    lineData['parameters'] = parameters;
-  }
+  const line: Line = { 
+    command, 
+    type: 'command',
+  };
+    
+  const hasParams = parameters && parameters.length;
+  hasParams && (line.parameters = parameters);
 
-  memory.push(number, lineData, indent);
-  return lineData;
+  memory.push(lineNo, line, indent);
+  return line;
 }
 
-function parseExpression(expr) {
+export function parseExpression(expr: string): Parameter {
   expr = expr.trim();
 
   if (!expr) {
@@ -141,7 +163,7 @@ function parseExpression(expr) {
   }
 }
 
-function parse(program) {
+export default function parse(program) {
   const lines = program.split(/\n/);
   const memory = new Memory();
 
@@ -151,5 +173,3 @@ function parse(program) {
 
   return memory.lines;
 }
-
-module.exports = { parse, parseLine, parseExpression };

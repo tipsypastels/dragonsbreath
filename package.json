@@ -2,12 +2,22 @@
   "name": "dragonsbreath",
   "author": "tipsypastels",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "lib/index.js",
   "license": "MIT",
   "scripts": {
-    "test": "yarn jest"
+    "test": "yarn jest",
+    "start": "npm run build:live",
+    "build": "tsc -p .",
+    "build:live": "nodemon --watch 'src/**/*.ts'"
   },
   "devDependencies": {
-    "jest": "^24.9.0"
+    "@babel/plugin-proposal-export-default-from": "^7.5.2",
+    "@types/jest": "^24.0.18",
+    "@types/node": "^12.7.4",
+    "jest": "^24.9.0",
+    "nodemon": "^1.19.2",
+    "ts-jest": "^24.0.2",
+    "ts-node": "^8.3.0",
+    "typescript": "^3.6.2"
   }
 }
