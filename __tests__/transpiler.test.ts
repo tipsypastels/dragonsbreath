@@ -36,7 +36,7 @@ describe(Transpiler, () => {
         hello
         release
       `);
-    })
+    });
   });
 
   describe('script command', () => {

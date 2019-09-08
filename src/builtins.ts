@@ -46,7 +46,7 @@ export default class Builtins {
       return this.build
         .addLine('lock')
         .yield()
-        .addLineInSelfAndExternals('release');
+        .addLineInSelfAndSubscripts('release', 'script');
     } else {
       return this.delegate();
     }

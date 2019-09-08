@@ -1,5 +1,5 @@
 import Builtins from "./builtins";
-import SubscriptCollection from "./subscript_collection";
+import SubscriptCollection, { SubscriptType } from "./subscript_collection";
 
 export default class ScriptBuilder {
   result: string[];
@@ -13,7 +13,7 @@ export default class ScriptBuilder {
     return this;
   }
 
-  addLineInSelfAndExternals(text: string): this {
+  addLineInSelfAndSubscripts(text: string, type: SubscriptType | 'all' = 'all'): this {
     this.addLine(text);
     // TODO add an external line
     return this;
