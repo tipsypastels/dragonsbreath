@@ -75,10 +75,7 @@ export function parseLine(lineNo: number, lineText: string, memory: Memory) {
     .map(parseExpression)
     .filter(expr => expr);
 
-  const line: Line = { 
-    command, 
-    type: 'command',
-  };
+  const line: Line = { command };
     
   const hasParams = parameters && parameters.length;
   hasParams && (line.parameters = parameters);
@@ -107,8 +104,10 @@ export function parseExpression(expr: string): Parameter {
 
   function comparisonResult(type) {
     return { type, 
-      left: parseExpression(match[1]), 
-      right: parseExpression(match[2]), 
+      value: {
+        left: parseExpression(match[1]), 
+        right: parseExpression(match[2]), 
+      }
     };
   }
   

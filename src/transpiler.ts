@@ -1,4 +1,6 @@
-import { Line } from "./parser";
+import Line, { Parameter } from "./line";
+import Builtins from "./builtins";
+import SubscriptCollection from "./subscript_collection";
 
 // import BUILTINS from "./builtins";
 // import { capitalize } from "./utils";
@@ -129,11 +131,50 @@ export default class Transpiler {
     this.currentScript = null;
   }
 
-  transpile(lines: Line[]): string {
-    return 'lol';
+  transpile(lines: Line[], parentLine?: Line, subscripts?: SubscriptCollection): string {
+    return lines.map(
+      (l, i) => this.transpileLine(i, l, parentLine, subscripts)
+    ).join('\n');
   }
 
   error(message: string) {
-    console.log(message);
+    throw new SyntaxError(message);
+  }
+
+  // public because the transpiler can call it
+  formatLineAsDelegated(line: Line): string {
+    return [
+      line.command,
+      line.parameters && line.parameters
+        .map(this.transpileParameter)
+        .join(', '),
+    ].join(' ');
+  }
+
+  private transpileLine(lineNo: number, line: Line, parentLine?: Line, subscripts?: SubscriptCollection): string {
+    const builtins = new Builtins(line, parentLine, this, subscripts);
+    const method = `COMMAND_${line.command}`;
+
+    if (method in builtins) {
+      return builtins[method]().toString();
+    } else {
+      return this.formatLineAsDelegated(line);
+    }
+  }
+
+  private transpileParameter(parameter: Parameter): string {
+    switch(parameter.type) {
+      case 'string': {
+        return `"${parameter.value}"`;
+      }
+
+      case 'it': {
+        return 'VAR_RESULT';
+      } 
+
+      default: {
+        return parameter.value.toString();
+      }
+    }
   }
 }

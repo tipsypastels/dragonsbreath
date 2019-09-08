@@ -149,7 +149,7 @@ function shouldBeBundled(lastLine: Line, currentLine: Line): boolean {
   }
 
   // this is already a bundle, check and then add it in
-  if (lastLine.type === 'bundle') {
+  if (lastLine.command === BUNDLING_KEY) {
     if (lastLine.bundlingGroup === getBundlingIndex(currentLine.command)) {
       return true;
     }
@@ -168,12 +168,11 @@ export function tryBundleLines(lastLine: Line, currentLine: Line): boolean {
   }
 
   // if the last line is a bundle, add it on
-  if (lastLine.type === 'bundle') {
+  if (lastLine.command === BUNDLING_KEY) {
     lastLine.children.push(currentLine);
   } else {
     const lastLineDup = { ...lastLine };
     lastLine.bundlingGroup = getBundlingIndex(lastLine.command)
-    lastLine.type = 'bundle';
     lastLine.command = BUNDLING_KEY;
     lastLine.children = [lastLineDup, currentLine];
     delete lastLine.parameters;
