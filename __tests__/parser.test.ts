@@ -198,6 +198,14 @@ describe(parseExpression, () => {
     expectExpr('hello', { type: 'token', value: 'hello' })
   });
 
+  test('a keyword argument', () => {
+    expectExpr('hello: world', { type: 'token', value: 'world' });
+  });
+
+  test('kwarg with no space after colon', () => {
+    expectExpr('hello:1', { type: 'number', value: 1 });
+  });
+
   test('equality', () => {
     expectExpr('a == b', {
       type: 'eq',

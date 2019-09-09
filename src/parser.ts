@@ -116,6 +116,10 @@ export function parseExpression(expr: string): Parameter {
       return { type: 'it', value: 'it' };
     }
 
+    case matching(/^\w+\s?:\s?(\w+)$/): {
+      return parseExpression(match[1]);
+    }
+
     case matching(/^(\d*\.?\d*)$/): {
       return { type: 'number', value: Number(match[0]) };
     }
