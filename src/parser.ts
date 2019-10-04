@@ -4,7 +4,7 @@ import { dig } from "./utils";
 
 export const INDENT = '  ';
 
-export type Chain = ({ lineNo: number, line: Line, indent: number })[];
+export type Chain = ({ line: Line, indent: number })[];
 
 export class Memory {
   lines: Line[];
@@ -15,7 +15,7 @@ export class Memory {
     this.chain = [];
   }
 
-  push(lineNo: number, line: Line, indent: number) {
+  push(line: Line, indent: number) {
     let pushToChain = true;
 
     if (indent < 1) {
@@ -33,15 +33,17 @@ export class Memory {
       });
 
       if (!parentLine) {
-        throw new SyntaxError(`Unexpected indent on line ${lineNo}`);
+        throw new SyntaxError(`Unexpected indent on line ${line.number}`);
       }
+
+      line.signature = parentLine.line.signature.concat(line.number);
 
       parentLine.line.children || (parentLine.line.children = []);
       parentLine.line.children.push(line);
     }
 
     if (pushToChain) {
-      this.chain.push({ lineNo, line, indent });
+      this.chain.push({ line, indent });
     }
   }
 
@@ -75,12 +77,16 @@ export function parseLine(lineNo: number, lineText: string, memory: Memory) {
     .map(parseExpression)
     .filter(expr => expr);
 
-  const line: Line = { command };
+  const line: Line = { 
+    command, 
+    number: lineNo, 
+    signature: [lineNo] 
+  };
     
   const hasParams = parameters && parameters.length;
   hasParams && (line.parameters = parameters);
 
-  memory.push(lineNo, line, indent);
+  memory.push(line, indent);
   return line;
 }
 

@@ -2,11 +2,11 @@ import parse, { parseExpression } from "../src/parser";
 import { BUNDLING_KEY } from "../src/bundling_logic";
 
 function expectParse(code, match) {
-  return expect(parse(code)).toStrictEqual(match);
+  return expect(parse(code)).toMatchObject(match);
 }
 
 function expectExpr(code, match) {
-  return expect(parseExpression(code)).toStrictEqual(match);
+  return expect(parseExpression(code)).toMatchObject(match);
 }
 
 describe(parse, () => {

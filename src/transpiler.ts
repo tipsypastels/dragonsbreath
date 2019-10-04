@@ -1,6 +1,5 @@
 import Line, { Parameter } from "./line";
-import Builtins from "./builtins";
-import SubscriptCollection from "./subscript_collection";
+import BUILTIN_COMMAND_DICT from "./builtin_commands/dictionary";
 
 // import BUILTINS from "./builtins";
 // import { capitalize } from "./utils";
@@ -131,9 +130,9 @@ export default class Transpiler {
     this.currentScript = null;
   }
 
-  transpile(lines: Line[], parentLine?: Line, subscripts?: SubscriptCollection): string {
+  transpile(lines: Line[], parentLine?: Line): string {
     return lines.map(
-      (l, i) => this.transpileLine(i, l, parentLine, subscripts)
+      (l, i) => this.transpileLine(i, l, parentLine)
     ).join('\n');
   }
 
@@ -151,18 +150,18 @@ export default class Transpiler {
     ].join(' ');
   }
 
-  private transpileLine(lineNo: number, line: Line, parentLine?: Line, subscripts?: SubscriptCollection): string {
-    const builtins = new Builtins(line, parentLine, this, subscripts);
-    const method = `COMMAND_${line.command}`;
+  transpileLine(lineNo: number, line: Line, parentLine?: Line): string {
+    const method = line.command;
 
-    if (method in builtins) {
-      return builtins[method]().toString();
+    if (method in BUILTIN_COMMAND_DICT) {
+      return new BUILTIN_COMMAND_DICT[method](line, parentLine, this)
+        .callRender();
     } else {
       return this.formatLineAsDelegated(line);
     }
   }
 
-  private transpileParameter(parameter: Parameter): string {
+  transpileParameter(parameter: Parameter): string {
     switch(parameter.type) {
       case 'string': {
         return `"${parameter.value}"`;
