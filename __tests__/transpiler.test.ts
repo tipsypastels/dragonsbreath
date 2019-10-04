@@ -52,8 +52,9 @@ function expectTranspileInsideScript(ast, result) {
 }
 
 function expectThrow(ast, error = SyntaxError) {
-  expect(() => new Transpiler().transpile(ast))
-    .toThrow(error);
+  expect(() => new Transpiler()
+    .transpile(insertRandomLineNumbers(ast))
+  ).toThrow(error);
 }
 
 describe(Transpiler, () => {
@@ -336,4 +337,10 @@ describe(Transpiler, () => {
       `);
     });
   });
+
+  describe('end', () => {
+    test('end', () => {
+      expectThrow([{ command: 'end' }]);
+    });
+  })
 });
