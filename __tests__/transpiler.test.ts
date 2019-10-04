@@ -245,7 +245,7 @@ describe(Transpiler, () => {
           }],
         },
         {
-          command: 'elseif',
+          command: 'else_if',
           parameters: [{
             type: 'eq', value: {
               left: { type: 'string', value: 'a' },

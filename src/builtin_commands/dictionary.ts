@@ -10,7 +10,8 @@ const BUILTIN_COMMAND_DICT = {
   script: Script,
   lock: Lock,
   if: If,
-  elseif: If, // fundamentally the same output
+  else_if: If, // fundamentally the same output
+  elif: If,
   else: Else,
   using_msgbox: UsingMsgbox,
   say: Say,
