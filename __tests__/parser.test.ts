@@ -2,6 +2,7 @@ import parse, { parseExpression } from "../src/parser";
 import { BUNDLING_KEY } from "../src/bundling_logic";
 
 function expectParse(code, match) {
+  // console.log(require('util').inspect(parse(code), { depth: null }));
   return expect(parse(code)).toMatchObject(match);
 }
 
@@ -63,6 +64,55 @@ describe(parse, () => {
           { command: 'b2' },
         ],
       }]);
+    });
+
+    test('multiple layers of nesting with lots of children', () => {
+      expectParse('if a == 1\n  say "hello world"\n  say "done with the tutorial"\nelse\n  playfanfare SOME_MUSIC\n  givemon A_DUCK\n  say "Got a duck"\n  waitfanfare', [
+        {
+          command: 'if',
+          parameters: [{
+            type: 'eq',
+            value: {
+              left: { type: 'token', value: 'a' },
+              right: { type: 'number', value: 1 },
+            },
+          }],
+          children: [{
+            command: BUNDLING_KEY,
+            bundlingGroup: 0,
+            children: [
+              {
+                command: 'say',
+                parameters: [{ type: 'string', value: 'hello world' }]
+              },
+              {
+                command: 'say',
+                parameters: [{ type: 'string', value: 'done with the tutorial' }]
+              },
+            ],
+          }],
+        },
+        {
+          command: 'else',
+          children: [
+            {
+              command: 'playfanfare',
+              parameters: [{ type: 'constant', value: 'SOME_MUSIC' }],
+            },
+            {
+              command: 'givemon',
+              parameters: [{ type: 'constant', value: 'A_DUCK' }],
+            },
+            {
+              command: 'say',
+              parameters: [{ type: 'string', value: 'Got a duck' }],
+            },
+            {
+              command: 'waitfanfare'
+            },
+          ],
+        },
+      ]);
     });
   });
 
@@ -152,6 +202,26 @@ describe(parse, () => {
             command: 'step_end',
           },
         ],
+      }]);
+    });
+
+    test('bunding two children of a parent command', () => {
+      expectParse('x\n  say "yo"\n  say "meme"', [{
+        command: 'x',
+        children: [{
+          command: BUNDLING_KEY,
+          bundlingGroup: 0,
+          children: [
+            {
+              command: 'say',
+              parameters: [{ type: 'string', value: 'yo' }],
+            },
+            {
+              command: 'say',
+              parameters: [{ type: 'string', value: 'meme' }],
+            }
+          ],
+        }],
       }]);
     });
   });

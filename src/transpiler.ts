@@ -142,12 +142,13 @@ export default class Transpiler {
 
   // public because the transpiler can call it
   formatLineAsDelegated(line: Line): string {
-    return [
-      line.command,
-      line.parameters && line.parameters
-        .map(this.transpileParameter)
-        .join(', '),
-    ].join(' ');
+    let string = line.command;
+
+    if (line.parameters) {
+      string += ` ${line.parameters.map(this.transpileParameter).join(', ')}`
+    }
+
+    return string;
   }
 
   transpileLine(lineNo: number, line: Line, parentLine?: Line): string {

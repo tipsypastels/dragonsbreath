@@ -17,18 +17,15 @@ export class Memory {
 
   push(line: Line, indent: number) {
     let pushToChain = true;
+    const lastLine = this.chain[this.chain.length - 1];
 
-    if (indent < 1) {
-      const lastLine = dig(this.chain[this.chain.length - 1], 'line');
-
-      if (tryBundleLines(lastLine, line)) {
-        pushToChain = false;
-      } else {
-        this.lines.push(line);
-      }
+    if (lastLine && indent === lastLine.indent && tryBundleLines(lastLine.line, line)) {
+      pushToChain = false;  
+    } else if (indent < 1) {
+      this.lines.push(line);
     } else {
       // find the last item in the chain whose indent is one less than this one and add it as a child
-      const parentLine = this.chain.reverse().find(chainItem => {
+      const parentLine = [...this.chain].reverse().find(chainItem => {
         return indent === chainItem.indent + 1;
       });
 

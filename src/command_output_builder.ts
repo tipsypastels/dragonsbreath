@@ -27,11 +27,14 @@ export default class CommandOutputBuilder {
 
   addGoto(opts: Goto): this {
     if (Script.current) {
+      /**
+       * order matters here - if you get the name before yielding, all children that use subscripts will also have the same numeric subscript id, because we're fetching the name first and only pushing the line on after. so always yield before getting the name
+       */
+      const yieldedLines = (opts.lines || this.command.yield())
+      .split('\n');
+
       const subscriptName = Script.current
         .getSubscriptName(opts.type);
-
-      const yieldedLines = (opts.lines || this.command.yield())
-        .split('\n');
 
       let lineName;
       switch(opts.type) {
