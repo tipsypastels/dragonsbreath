@@ -4,6 +4,11 @@ import CommandOutputBuilder from "../command_output_builder";
 
 export type CommandResult = { toString(): string };
 
+type ParamAssertionType =
+  | string
+  | string[]
+  | { optional: string | string[] }
+
 export default abstract class BuiltinCommand {
   protected output: CommandOutputBuilder;
   
@@ -43,18 +48,40 @@ export default abstract class BuiltinCommand {
     return this.transpiler.transpileParameter(param);
   }
 
-  assertParams(...types: (string | string[])[]) {
+  assertParams(...types: ParamAssertionType[]) {
     let { command, parameters } = this;
     parameters || (parameters = []);
 
-    if (parameters.length !== types.length) {
-      this.error(`${command} requires ${types.length} parameters, got ${parameters.length}`);
+    let requiredTypes = types.filter(t => {
+      return typeof t === 'string' || Array.isArray(t);
+    });
+
+    let rangeStr = requiredTypes.length === types.length
+      ? requiredTypes.length
+      : `${requiredTypes.length}..${types.length}`;
+
+    if (parameters.length < requiredTypes.length) {
+      this.error(`${command} requires ${rangeStr} parameters, got ${parameters.length}`);
+    }
+
+    if (parameters.length > types.length) {
+      this.error(`${command} requires ${rangeStr} parameters, got ${parameters.length}`);
     }
 
     for (let i = 0; i < types.length; i++) {
-      const valid = Array.isArray(types[i])
-        ? types[i].includes(parameters[i].type)
-        : types[i] === parameters[i].type;
+      const type = types[i];
+      let param = parameters[i];
+      let valid;
+
+      if (typeof type === 'string') {
+        valid = type === param.type;
+      } else if (Array.isArray(type)) {
+        valid = type.includes(param.type);
+      } else if (typeof type.optional === 'string') {
+        valid = !param || type.optional === param.type;
+      } else {
+        valid = !param || type.optional.includes(param.type);
+      }
 
       if (!valid) {
         this.error(`Parameter ${i + 1} of ${command} must be ${types[i]}, got ${parameters[i].type}`);

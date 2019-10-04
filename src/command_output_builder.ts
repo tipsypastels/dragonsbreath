@@ -1,5 +1,10 @@
 import BuiltinCommand from "./builtin_commands/builtin_command";
 import Script, { Subscript, SubscriptType, subscriptIsChildOfLine } from "./builtin_commands/script";
+import Msgbox from "./msgbox";
+
+type Goto = 
+  | { type: 'code', if: string, lines?: string }
+  | { type: 'text', lines: string };
 
 export default class CommandOutputBuilder {
   result: string[];
@@ -20,18 +25,33 @@ export default class CommandOutputBuilder {
     return this;
   }
 
-  addGotoYield(opts: { type: SubscriptType, if: string }): this {
+  addGoto(opts: Goto): this {
     if (Script.current) {
       const subscriptName = Script.current
         .getSubscriptName(opts.type);
 
-      // TODO need to support msgbox and applymovement here
-      this.addLine(`goto_if_${opts.if} ${subscriptName}`);
+      const yieldedLines = (opts.lines || this.command.yield())
+        .split('\n');
+
+      let lineName;
+      switch(opts.type) {
+        case 'code': {
+          lineName = `goto_if_${opts.if} ${subscriptName}`;
+          break;
+        };
+        case 'text': {
+          lineName = `msgbox ${subscriptName}, ${Msgbox.current}`;
+          break;
+        };
+        // TODO support applymovement
+      }
+
+      this.addLine(lineName);
       
       Script.current.subscripts.push({
         name: subscriptName,
         type: opts.type,
-        texts: this.command.yield().split('\n'),
+        texts: yieldedLines,
         sourceLine: this.command.line,
         sourceParentLine: this.command.parentLine,
       }); 

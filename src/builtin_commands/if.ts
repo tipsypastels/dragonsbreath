@@ -23,7 +23,6 @@ export default class If extends BuiltinCommand {
         .addLine(`compare ${this.param(left)}, ${this.param(right)}`);
     }
 
-    this.output
-      .addGotoYield({ type: 'code', if: condition.type });
+    this.output.addGoto({ type: 'code', if: condition.type });
   }
 }

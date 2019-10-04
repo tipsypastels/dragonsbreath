@@ -227,7 +227,113 @@ describe(Transpiler, () => {
           hello
           release
           end
-      `)
-    })
+      `);
+    });
+
+    test('if else if', () => {
+      expectTranspileInsideScript([
+        {
+          command: 'if',
+          parameters: [{ type: 'eq', value: {
+            left: { type: 'string', value: 'a' },
+            right: { type: 'string', value: 'b' },
+          } }],
+          children: [{
+            command: 'lock',
+            children: [{ command: 'hello' }],
+          }],
+        },
+        {
+          command: 'elseif',
+          parameters: [{
+            type: 'eq', value: {
+              left: { type: 'string', value: 'a' },
+              right: { type: 'string', value: 'c' },
+            }
+          }],
+          children: [{
+            command: 'lock',
+            children: [{ command: 'goodbye' }],
+          }],
+        },
+        {
+          command: 'else',
+          children: [{
+            command: 'lol',
+          }],
+        },
+      ], `
+        TestScript::
+          compare "a", "b"
+          goto_if_eq _TestScript_Subscript_Code_0
+          compare "a", "c"
+          goto_if_eq _TestScript_Subscript_Code_1
+          lol
+          end
+
+        _TestScript_Subscript_Code_0::
+          lock
+          hello
+          release
+          end
+
+        _TestScript_Subscript_Code_1::
+          lock
+          goodbye
+          release
+          end
+      `);
+    });
+  });
+
+  describe('say', () => {
+    test('basic say', () => {
+      expectTranspileInsideScript([{
+        command: 'say',
+        parameters: [{ type: 'string', value: 'asm' }],
+      }], `
+        TestScript::
+          msgbox _TestScript_Subscript_Text_0, MSGBOX_DEFAULT
+          end
+          
+        _TestScript_Subscript_Text_0:
+          .string "asm"
+      `);
+    });
+
+    test('a nonstandard msgbox', () => {
+      expectTranspileInsideScript([{
+        command: 'say',
+        parameters: [
+          { type: 'string', value: 'asm' },
+          { type: 'constant', value: 'MSGBOX_SIGN' },
+        ],
+      }], `
+        TestScript::
+          msgbox _TestScript_Subscript_Text_0, MSGBOX_SIGN
+          end
+          
+        _TestScript_Subscript_Text_0:
+          .string "asm"
+      `);
+    });
+
+    test('integrating using_msgbox', () => {
+      expectTranspileInsideScript([{
+        command: 'using_msgbox',
+        parameters: [{ type: 'constant', value: 'MSGBOX_SIGN' }],
+        children: [{
+          command: 'say',
+          parameters: [{ type: 'string', value: 'asm' }],
+        }],
+      }], `
+        TestScript::
+          msgbox _TestScript_Subscript_Text_0, MSGBOX_SIGN
+          end
+          
+        _TestScript_Subscript_Text_0:
+          .string "asm"
+      `);
+    });
   });
 });
