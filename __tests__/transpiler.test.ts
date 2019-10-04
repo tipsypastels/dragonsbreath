@@ -342,5 +342,43 @@ describe(Transpiler, () => {
     test('end', () => {
       expectThrow([{ command: 'end' }]);
     });
-  })
+  });
+
+  describe('givemon', () => {
+    test('with all parameters', () => {
+      expectTranspile([{
+        command: 'givemon',
+        parameters: [
+          { type: 'constant', value: 'PSYDUCK' },
+          { type: 'number', value: 5 },
+          { type: 'constant', value: 'ITEM_NONE' },
+          { type: 'constant', value: '0x0' },
+          { type: 'constant', value: '0x0' },
+          { type: 'number', value: 0 },
+        ]
+      }], `givemon PSYDUCK, 5, ITEM_NONE, 0x0, 0x0, 0`);
+    });
+
+    test('with minimal parameters', () => {
+      expectTranspile([{
+        command: 'givemon',
+        parameters: [
+          { type: 'constant', value: 'PSYDUCK' },
+          { type: 'number', value: 5 },
+        ]
+      }], `givemon PSYDUCK, 5, ITEM_NONE, 0x0, 0x0, 0`);
+    });
+
+    test('with partial parameters', () => {
+      expectTranspile([{
+        command: 'givemon',
+        parameters: [
+          { type: 'constant', value: 'PSYDUCK' },
+          { type: 'number', value: 5 },
+          { type: 'constant', value: 'ITEM_NONE' },
+          { type: 'constant', value: '0x0' },
+        ]
+      }], `givemon PSYDUCK, 5, ITEM_NONE, 0x0, 0x0, 0`);
+    });
+  });
 });

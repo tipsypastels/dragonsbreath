@@ -5,6 +5,7 @@ import Else from './else';
 import UsingMsgbox from './using_msgbox';
 import Say from './say';
 import End from './end';
+import GiveMon from './givemon';
 
 const BUILTIN_COMMAND_DICT = {
   script: Script,
@@ -16,6 +17,7 @@ const BUILTIN_COMMAND_DICT = {
   using_msgbox: UsingMsgbox,
   say: Say,
   end: End,
+  givemon: GiveMon,
 }
 
 export default BUILTIN_COMMAND_DICT;
