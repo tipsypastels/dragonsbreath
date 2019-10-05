@@ -6,7 +6,7 @@
 
 Dragonsbreath is written in TypeScript and compiled to JavaScript. Make sure you have node installed on your system.
 ```bash
-npm install -g @tipsypastels/dragonsbreath
+npm install -g dragonsbreath
 cd your/project/directory
 dragonsbreath
 ```
