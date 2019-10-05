@@ -1,6 +1,21 @@
 # Dragonsbreath
 
-*(Note that this project is not yet ready for use. Contributions welcome~)*
+*(Note that this project is still in a very early stage. It should be usable, and early adopter feedback would be lovely)*
+
+## Installation
+
+Dragonsbreath is written in TypeScript and compiled to JavaScript. Make sure you have node installed on your system.
+```bash
+npm install -g dragonsbreath
+cd your/project/directory
+dragonsbreath
+```
+
+By default, Dragonsbreath will find all `.dbr` files in the `data` folder of your project and convert them into `.inc` files. If there are existing `.inc` files with the same names, it will try to cleanly merge them and keep all existing scripts. Please tell me if you experience any issues with this.
+
+If you want to auto-run Dragonsbreath every time you build your hack you could probably add it to your Makefile but I don't know much about how Makefiles work so I haven't tried it yet. I'll look into this for 1.0.
+
+## Reasoning
 
 For a lot of reasons, I dislike scripting in Pokeemerald. The rigid and unintuitive syntax makes programming much more error-prone, as well as taking way longer than it should for a decent-sized script. Instead, I decided to make a simpler and more pleasant language for use in my hack [Pokemon Gnosis](https://github.com/tipsypastels/pokegnosis) and any others who want to use it. It comes with with a transpiler (compiler? not sure what the right term is) that converts it into pokeemerald's scripting language.
 
@@ -49,6 +64,6 @@ So, as you may have gleaned from that, some intended features of the language:
 - You can use a command like `checkplayergender` inside an if statement.
 - Certain commands like `lock` have logical pairs - if you indent the commands following lock (referred to as "passing commands as children to `lock`"), it will automatically add the `release` after the commands passed.
 
-## Running Tests
+## Documentation
 
-Run the tests with `yarn test`.
+See the [wiki](https://github.com/tipsypastels/dragonsbreath/wiki).
