@@ -9,6 +9,8 @@ import GiveMon from './givemon';
 import MiscMovementCommand from './misc_movement_command';
 import Move from './move';
 import MoveAndWait from './move_and_wait';
+import { BUNDLING_KEY } from '../bundling_logic';
+import ___Bundle___ from './___bundle___';
 
 const BUILTIN_COMMAND_DICT = {
   script: Script,
@@ -24,6 +26,7 @@ const BUILTIN_COMMAND_DICT = {
   givemon: GiveMon,
   move: Move,
   move_and_wait: MoveAndWait,
+  [BUNDLING_KEY]: ___Bundle___,
 }
 
 MiscMovementCommand.all

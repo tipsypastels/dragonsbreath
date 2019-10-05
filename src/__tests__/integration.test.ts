@@ -139,4 +139,23 @@ describe('integration tests', () => {
         end
     `);
   });
+
+  test('a friendly sign', () => {
+    expectDragonsbreath(`
+      script AFriendlySign
+        using_msgbox MSGBOX_SIGN
+          say "Hello!\\n"
+          say "I am a sign.\\p"
+          say "Anyways, go north.$"
+    `, `
+      AFriendlySign::
+        msgbox _AFriendlySign_Subscript_Text_0, MSGBOX_SIGN
+        end
+
+      _AFriendlySign_Subscript_Text_0:
+        .string "Hello!\\n"
+        .string "I am a sign.\\p"
+        .string "Anyways, go north.$"
+    `);
+  });
 });
