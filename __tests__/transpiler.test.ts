@@ -446,6 +446,16 @@ describe(Transpiler, () => {
           walk_down
           step_end
       `);
-    })
+    });
+
+    test('move does not permit regular commands as children', () => {
+      expectThrow([{
+        command: 'move',
+        parameters: [{ type: 'token', value: 'player' }],
+        children: [{
+          command: 'lock'
+        }],
+      }]);
+    });
   });
 });

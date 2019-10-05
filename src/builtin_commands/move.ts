@@ -1,4 +1,5 @@
 import BuiltinCommand from "./builtin_command";
+import MiscMovementCommand from "./misc_movement_command";
 
 export default class Move extends BuiltinCommand {
   render() {
@@ -9,7 +10,11 @@ export default class Move extends BuiltinCommand {
     this.assertChildren()
       .assertParams(['number', 'constant', 'token']);
 
-    let [id] = this.parameters;
+  if (this.children.some(c => MiscMovementCommand.all.indexOf(c.command) === -1)) {
+    this.error('All children of the move command must be movement commands. You cannot use regular commands as children of move.');
+  }
+
+  let [id] = this.parameters;
 
     if (id.type === 'token') {
       if (id.value === 'player') {
