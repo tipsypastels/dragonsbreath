@@ -2,12 +2,6 @@ import Line, { Parameter } from "./line";
 import BUILTIN_COMMAND_DICT from "./builtin_commands/dictionary";
 
 export default class Transpiler {
-  currentScript: string;
-
-  constructor() {
-    this.currentScript = null;
-  }
-
   transpile(lines: Line[], parentLine?: Line): string {
     return lines.map(
       (l, i) => this.transpileLine(i, l, parentLine)
