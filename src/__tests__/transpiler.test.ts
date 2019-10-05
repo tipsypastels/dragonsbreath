@@ -137,6 +137,23 @@ describe(Transpiler, () => {
           end
       `)
     });
+
+    test('lockall with no children', () => {
+      expectTranspile([{
+        command: 'lockall'
+      }], `lockall`);
+    });
+
+    test('lockall with children', () => {
+      expectTranspile([{
+        command: 'lockall',
+        children: [{ command: 'hello' }],
+      }], `
+        lockall
+        hello
+        releaseall
+      `);
+    });
   });
 
   describe('script command', () => {

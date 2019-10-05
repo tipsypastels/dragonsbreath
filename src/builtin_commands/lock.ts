@@ -4,14 +4,22 @@ export default class Lock extends BuiltinCommand {
   render() {
     if (this.children) {
       return this.output
-        .addLine('lock')
+        .addLine(this.startingKword)
         .yield()
         .eachSubscript(
-          s => s.texts.push('release'), { type: 'code' }
+          s => s.texts.push(this.endingKword), { type: 'code' }
         )
-        .addLine('release');
+        .addLine(this.endingKword);
     } else {
-      return 'lock';
+      return this.startingKword;
     }
+  }
+
+  get startingKword() {
+    return 'lock';
+  }
+
+  get endingKword() {
+    return 'release';
   }
 }

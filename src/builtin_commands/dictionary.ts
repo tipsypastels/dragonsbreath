@@ -11,10 +11,12 @@ import Move from './move';
 import MoveAndWait from './move_and_wait';
 import { BUNDLING_KEY } from '../bundling_logic';
 import ___Bundle___ from './___bundle___';
+import LockAll from './lockall';
 
 const BUILTIN_COMMAND_DICT = {
   script: Script,
   lock: Lock,
+  lockall: LockAll,
   if: If,
   else_if: If, // fundamentally the same output
   elif: If,
