@@ -7,12 +7,13 @@ export default class FileMerger {
   merge() {
     const all = { 
       ...this.extractScriptsToObj(this.existingScripts),
+      '@ Beginning Dragonsbreath scripts': '\n',
       ...this.extractScriptsToObj(this.newScripts),
     };
 
     const finalScript = Object.entries(all).map(([title, body]) => {
       return title + body;
-    }).join('\n\n');
+    }).join('\n');
     
     return finalScript;
   }
