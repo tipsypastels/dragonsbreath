@@ -4,10 +4,14 @@ type FileCallback = (file: string, content: string) => void;
 
 export default class FileReader {
   EXT = 'dbr';
-  BASE = __dirname.replace(/\\(?:src|lib)$/, '')
+  BASE = 'data';
 
   compileAll(callback?: FileCallback) {
-    return this.compileDir(this.BASE, callback);
+    if (!fs.existsSync(this.BASE)) {
+      console.log(`\x1b[31mThe path "${this.BASE}" could not be found in this directory.\x1b[0m`);
+    } else {
+      return this.compileDir(this.BASE, callback);
+    }
   }
 
   private compileDir(dir: string, callback?: FileCallback): string[] {
