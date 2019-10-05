@@ -58,5 +58,7 @@
 
     /* Advanced Options */
     "resolveJsonModule": true                 /* Include modules imported with '.json' extension */
-  }
+
+  },
+  "exclude": ["src/__tests__"]
 }

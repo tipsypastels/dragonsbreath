@@ -1,4 +1,4 @@
-import { trimAndKeepIndents } from "../src/utils";
+import { trimAndKeepIndents } from "../utils";
 
 describe(trimAndKeepIndents, () => {
   test('simple test', () => {

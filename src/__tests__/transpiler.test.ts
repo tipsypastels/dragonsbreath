@@ -1,5 +1,5 @@
-import Transpiler from "../src/transpiler";
-import Line from "../src/line";
+import Transpiler from "../transpiler";
+import Line from "../line";
 
 const IF_PARAMS_STUB = [{
   type: 'eq', value: {

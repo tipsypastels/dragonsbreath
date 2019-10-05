@@ -1,6 +1,6 @@
-import parse from '../src/parser';
-import Transpiler from '../src/transpiler';
-import { trimAndKeepIndents } from '../src/utils';
+import parse from '../parser';
+import Transpiler from '../transpiler';
+import { trimAndKeepIndents } from '../utils';
 
 function format(text: string) {
   return trimAndKeepIndents(text.split('\n')

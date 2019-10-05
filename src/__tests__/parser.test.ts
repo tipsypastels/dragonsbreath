@@ -1,5 +1,5 @@
-import parse, { parseExpression } from "../src/parser";
-import { BUNDLING_KEY } from "../src/bundling_logic";
+import parse, { parseExpression } from "../parser";
+import { BUNDLING_KEY } from "../bundling_logic";
 
 function expectParse(code, match) {
   // console.log(require('util').inspect(parse(code), { depth: null }));
