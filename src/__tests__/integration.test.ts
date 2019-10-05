@@ -30,32 +30,32 @@ describe('integration tests', () => {
             waitfanfare
     `, `
       GivePokemonDemo::
-      lock
-      faceplayer
-      msgbox _GivePokemonDemo_Subscript_Text_0, MSGBOX_DEFAULT
-      getpartysize
-      compare VAR_RESULT, 6
-      goto_if_eq _GivePokemonDemo_Subscript_Code_2
-      givemon SPECIES_DRATINI, 5, ITEM_DRAGON_FANG, 0x0, 0x0, 0
-      playfanfare MUS_FANA4
-      msgbox _GivePokemonDemo_Subscript_Text_3, MSGBOX_DEFAULT
-      waitfanfare
-      release
-      end
+        lock
+        faceplayer
+        msgbox _GivePokemonDemo_Subscript_Text_0, MSGBOX_DEFAULT
+        getpartysize
+        compare VAR_RESULT, 6
+        goto_if_eq _GivePokemonDemo_Subscript_Code_2
+        givemon SPECIES_DRATINI, 5, ITEM_DRAGON_FANG, 0x0, 0x0, 0
+        playfanfare MUS_FANA4
+        msgbox _GivePokemonDemo_Subscript_Text_3, MSGBOX_DEFAULT
+        waitfanfare
+        release
+        end
 
       _GivePokemonDemo_Subscript_Text_0:
-      .string "Please take this Dratini!$"
+        .string "Please take this Dratini!$"
 
       _GivePokemonDemo_Subscript_Text_1:
-      .string "Ah, your party is full.$"
+        .string "Ah, your party is full.$"
 
       _GivePokemonDemo_Subscript_Code_2::
-      msgbox _GivePokemonDemo_Subscript_Text_1, MSGBOX_DEFAULT
-      release
-      end
+        msgbox _GivePokemonDemo_Subscript_Text_1, MSGBOX_DEFAULT
+        release
+        end
 
       _GivePokemonDemo_Subscript_Text_3:
-      .string "{PLAYER} received a Dratini!$"
+        .string "{PLAYER} received a Dratini!$"
     `);
   });
 
@@ -83,42 +83,42 @@ describe('integration tests', () => {
           say "What do you think?$"
     `, `
       MyLittleDance::
-      lock
-      faceplayer
-      applymovement 1, _MyLittleDance_Subscript_Movement_0
-      faceplayer
-      applymovement 1, _MyLittleDance_Subscript_Movement_1
-      faceplayer
-      applymovement 1, _MyLittleDance_Subscript_Movement_2
-      faceplayer
-      applymovement 1, _MyLittleDance_Subscript_Movement_3
-      faceplayer
-      msgbox _MyLittleDance_Subscript_Text_4, MSGBOX_DEFAULT
-      release
-      end
+        lock
+        faceplayer
+        applymovement 1, _MyLittleDance_Subscript_Movement_0
+        faceplayer
+        applymovement 1, _MyLittleDance_Subscript_Movement_1
+        faceplayer
+        applymovement 1, _MyLittleDance_Subscript_Movement_2
+        faceplayer
+        applymovement 1, _MyLittleDance_Subscript_Movement_3
+        faceplayer
+        msgbox _MyLittleDance_Subscript_Text_4, MSGBOX_DEFAULT
+        release
+        end
 
       _MyLittleDance_Subscript_Movement_0:
-      walk_up
-      walk_right
-      step_end
+        walk_up
+        walk_right
+        step_end
 
       _MyLittleDance_Subscript_Movement_1:
-      walk_right
-      walk_down
-      step_end
+        walk_right
+        walk_down
+        step_end
 
       _MyLittleDance_Subscript_Movement_2:
-      walk_down
-      walk_left
-      step_end
+        walk_down
+        walk_left
+        step_end
 
       _MyLittleDance_Subscript_Movement_3:
-      walk_left
-      walk_up
-      step_end
+        walk_left
+        walk_up
+        step_end
 
       _MyLittleDance_Subscript_Text_4:
-      .string "What do you think?$"
+        .string "What do you think?$"
     `);
   });
 });

@@ -63,7 +63,10 @@ export function parseLine(lineNo: number, lineText: string, memory: Memory) {
 
   const strComma = `${Math.random()}___StrComma___`;
 
-  lineText = lineText.replace(/^\s*/, '');
+  lineText = lineText
+    .replace(/^\s*/, '')
+    .replace(/\r$/, '');
+
   const command = lineText.split(' ')[0];
   const parameters = lineText
     .slice(command.length + 1)

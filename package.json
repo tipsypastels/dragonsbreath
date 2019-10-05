@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "test": "yarn jest",
-    "start": "npm run build:live",
+    "start": "yarn build && node lib/index.js",
     "build": "tsc -p .",
     "build:live": "nodemon --watch 'src/**/*.ts'"
   },

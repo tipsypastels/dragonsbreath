@@ -1,0 +1,12 @@
+script GivePokemonDemo
+  lock
+    faceplayer
+    say "Please take this Dratini!$"
+    getpartysize
+    if it is 6
+      say "Ah, your party is full.$"
+    else
+      givemon SPECIES_DRATINI, 5, ITEM_DRAGON_FANG
+      playfanfare MUS_FANA4
+      say "{PLAYER} received a Dratini!$"
+      waitfanfare

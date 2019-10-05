@@ -18,18 +18,15 @@ export function dig(obj: any, prop: string) {
  */
 export function trimAndKeepIndents(text: string): string {
   const lines = text.split('\n');
+  let firstLineWithContent = lines.find(l => l.trim());
+  let indent;
 
-  let lowestIndent = Math.min(...lines.map(line => {
-    const match = /^\s+/.exec(line);
-    if (match) {
-      return match[0].length;
-    }
-    return Infinity;
-  }));
-
-  if (lowestIndent === Infinity) {
-    lowestIndent = 0;
+  let match;
+  if (match = /^\s+/.exec(firstLineWithContent)) {
+    indent = match[0].length; 
+  } else {
+    indent = 0;
   }
 
-  return lines.map(l => l.slice(lowestIndent)).join('\n');
+  return lines.map(l => l.slice(indent)).join('\n');
 }

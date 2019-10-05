@@ -51,12 +51,10 @@ export default class Script extends BuiltinCommand {
 
     this.subscripts.forEach(subscript => {
       this.output
-        .addLine('\n')
         .addLine(`${subscript.name}:${subscript.type === 'code' ? ':' : ''}`)
         .addLine(...subscript.texts)
         .addLineIf(subscript.type === 'code', 'end')
         .addLineIf(subscript.type === 'movement', 'step_end')
-        .addLine('\n');
     }); 
   }
 
