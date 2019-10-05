@@ -1,9 +1,25 @@
 {
-  "name": "dragonsbreath",
+  "name": "@tipsypastels/dragonsbreath",
   "author": "tipsypastels",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "main": "lib/index.js",
   "license": "MIT",
+  "description": "A scripting language for Pokeemerald",
+  "bin": {
+    "@tipsypastels/dragonsbreath": "bin/dragonsbreath",
+    "dragonsbreath": "bin/dragonsbreath"
+  },
+  "files": [
+    "bin/",
+    "lib/"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "dragonsbreath",
+    "pokeemerald"
+  ],
   "scripts": {
     "test": "yarn jest",
     "start": "yarn build && node lib/index.js",
@@ -19,5 +35,8 @@
     "ts-jest": "^24.0.2",
     "ts-node": "^8.3.0",
     "typescript": "^3.6.2"
+  },
+  "dependencies": {
+    "esm": "^3.2.25"
   }
 }
