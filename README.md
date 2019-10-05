@@ -39,19 +39,17 @@ MyScript::
   faceplayer
   checkplayergender
   compare VAR_RESULT, FEMALE
-  goto_if_eq MyScript__Subscript_1
-  msgbox MyScript__Text_2, MSGBOX_DEFAULT
+  goto_if_eq _MyScript_Subscript_Code_1
+  msgbox _MyScript_Subscript_Text_2, MSGBOX_DEFAULT
   release
   end
-
-MyScript__Subscript_1::
-  msgbox MyScript__Subscript_2, MSGBOX_DEFAULT
-  end
-
-MyScript__Text_1:
+_MyScript_Subscript_Text_0:
   .string "Hey sis!$"
-
-MyScript__Text_2:
+_MyScript_Subscript_Code_1::
+  msgbox _MyScript_Subscript_Text_0, MSGBOX_DEFAULT
+  release
+  end
+_MyScript_Subscript_Text_2:
   .string "Ugh, what do you want?$"
 ```
 
