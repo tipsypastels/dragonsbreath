@@ -4,7 +4,8 @@ import Msgbox from "./msgbox";
 
 type Goto = 
   | { type: 'code', if: string, lines?: string }
-  | { type: 'text', lines: string };
+  | { type: 'text', lines: string }
+  | { type: 'movement', eventId: string, lines?: string };
 
 export default class CommandOutputBuilder {
   result: string[];
@@ -46,7 +47,10 @@ export default class CommandOutputBuilder {
           lineName = `msgbox ${subscriptName}, ${Msgbox.current}`;
           break;
         };
-        // TODO support applymovement
+        case 'movement': {
+          lineName = `applymovement ${opts.eventId}, ${subscriptName}`;
+          break;
+        }
       }
 
       this.addLine(lineName);

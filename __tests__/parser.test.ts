@@ -190,21 +190,6 @@ describe(parse, () => {
       }]);
     });
 
-    test('bundling two commands from the same group', () => {
-      expectParse('emote_heart\nstep_end', [{
-        command: BUNDLING_KEY,
-        bundlingGroup: 1,
-        children: [
-          {
-            command: 'emote_heart',
-          },
-          {
-            command: 'step_end',
-          },
-        ],
-      }]);
-    });
-
     test('bunding two children of a parent command', () => {
       expectParse('x\n  say "yo"\n  say "meme"', [{
         command: 'x',

@@ -6,6 +6,9 @@ import UsingMsgbox from './using_msgbox';
 import Say from './say';
 import End from './end';
 import GiveMon from './givemon';
+import MiscMovementCommand from './misc_movement_command';
+import Move from './move';
+import MoveAndWait from './move_and_wait';
 
 const BUILTIN_COMMAND_DICT = {
   script: Script,
@@ -17,7 +20,13 @@ const BUILTIN_COMMAND_DICT = {
   using_msgbox: UsingMsgbox,
   say: Say,
   end: End,
+  step_end: End,
   givemon: GiveMon,
+  move: Move,
+  move_and_wait: MoveAndWait,
 }
+
+MiscMovementCommand.all
+  .forEach(m => BUILTIN_COMMAND_DICT[m] = MiscMovementCommand);
 
 export default BUILTIN_COMMAND_DICT;

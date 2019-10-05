@@ -381,4 +381,71 @@ describe(Transpiler, () => {
       }], `givemon PSYDUCK, 5, ITEM_NONE, 0x0, 0x0, 0`);
     });
   });
+
+  describe('movement', () => {
+    test('basic movement', () => {
+      expectTranspileInsideScript([{
+        command: 'move',
+        parameters: [{ type: 'number', value: '1' }],
+        children: [
+          { command: 'walk_up' },
+          { command: 'walk_down' }
+        ]
+      }], `
+        TestScript::
+          applymovement 1, _TestScript_Subscript_Movement_0
+          end
+
+        _TestScript_Subscript_Movement_0:
+          walk_up
+          walk_down
+          step_end
+      `);
+    });
+
+    test('moving the player', () => {
+      expectTranspileInsideScript([{
+        command: 'move',
+        parameters: [{ type: 'token', value: 'player' }],
+        children: [
+          { command: 'walk_up' },
+          { command: 'walk_down' }
+        ]
+      }], `
+        TestScript::
+          applymovement EVENT_OBJ_ID_PLAYER, _TestScript_Subscript_Movement_0
+          end
+
+        _TestScript_Subscript_Movement_0:
+          walk_up
+          walk_down
+          step_end
+      `);
+    });
+
+    test('cannot use movement commands outside of move', () => {
+      expectThrow([{ command: 'walk_up' }]);
+    });
+
+    test('move_and_wait', () => {
+      expectTranspileInsideScript([{
+        command: 'move_and_wait',
+        parameters: [{ type: 'token', value: 'player' }],
+        children: [
+          { command: 'walk_up' },
+          { command: 'walk_down' }
+        ]
+      }], `
+        TestScript::
+          applymovement EVENT_OBJ_ID_PLAYER, _TestScript_Subscript_Movement_0
+          waitmovement EVENT_OBJ_ID_PLAYER
+          end
+
+        _TestScript_Subscript_Movement_0:
+          walk_up
+          walk_down
+          step_end
+      `);
+    })
+  });
 });

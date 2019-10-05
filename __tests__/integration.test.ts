@@ -58,4 +58,67 @@ describe('integration tests', () => {
       .string "{PLAYER} received a Dratini!$"
     `);
   });
+
+  test('dancing the jig', () => {
+    expectDragonsbreath(`
+      script MyLittleDance
+        lock
+          faceplayer
+          move 1
+            walk_up
+            walk_right
+          faceplayer
+          move 1
+            walk_right
+            walk_down
+          faceplayer
+          move 1
+            walk_down
+            walk_left
+          faceplayer
+          move 1
+            walk_left
+            walk_up
+          faceplayer
+          say "What do you think?$"
+    `, `
+      MyLittleDance::
+      lock
+      faceplayer
+      applymovement 1, _MyLittleDance_Subscript_Movement_0
+      faceplayer
+      applymovement 1, _MyLittleDance_Subscript_Movement_1
+      faceplayer
+      applymovement 1, _MyLittleDance_Subscript_Movement_2
+      faceplayer
+      applymovement 1, _MyLittleDance_Subscript_Movement_3
+      faceplayer
+      msgbox _MyLittleDance_Subscript_Text_4, MSGBOX_DEFAULT
+      release
+      end
+
+      _MyLittleDance_Subscript_Movement_0:
+      walk_up
+      walk_right
+      step_end
+
+      _MyLittleDance_Subscript_Movement_1:
+      walk_right
+      walk_down
+      step_end
+
+      _MyLittleDance_Subscript_Movement_2:
+      walk_down
+      walk_left
+      step_end
+
+      _MyLittleDance_Subscript_Movement_3:
+      walk_left
+      walk_up
+      step_end
+
+      _MyLittleDance_Subscript_Text_4:
+      .string "What do you think?$"
+    `);
+  });
 });

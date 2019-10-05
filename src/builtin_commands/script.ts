@@ -3,7 +3,7 @@ import Transpiler from "../transpiler";
 import Line, { lineIsDescendant } from "../line";
 import { capitalize } from "../utils";
 
-export type SubscriptType = 'code' | 'text' | 'message';
+export type SubscriptType = 'code' | 'text' | 'movement';
 
 export interface Subscript {
   name: string;
@@ -55,6 +55,7 @@ export default class Script extends BuiltinCommand {
         .addLine(`${subscript.name}:${subscript.type === 'code' ? ':' : ''}`)
         .addLine(...subscript.texts)
         .addLineIf(subscript.type === 'code', 'end')
+        .addLineIf(subscript.type === 'movement', 'step_end')
         .addLine('\n');
     }); 
   }
