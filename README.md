@@ -24,7 +24,8 @@ Dragonsbreath syntax is exceedingly simple. Wherever possible it attempts to be 
 script MyScript
   lock
     faceplayer
-    if checkplayergender is FEMALE
+    checkplayergender
+    if it is FEMALE
       say "Hey sis!$"
     else
       say "Ugh, what do you want?$"
