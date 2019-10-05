@@ -121,4 +121,22 @@ describe('integration tests', () => {
         .string "What do you think?$"
     `);
   });
+
+  test('two scripts', () => {
+    expectDragonsbreath(`
+      script ScriptX
+        say_hello
+
+      script ScriptY
+        say_goodbye
+    `, `
+      ScriptX::
+        say_hello
+        end
+
+      ScriptY::
+        say_goodbye
+        end
+    `);
+  });
 });
