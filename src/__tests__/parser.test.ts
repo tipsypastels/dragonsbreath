@@ -190,6 +190,61 @@ describe(parse, () => {
       }]);
     });
 
+    test('does not bundle say when the msgboxes are different', () => {
+      expectParse('say "a", MSGBOX_DEFAULT\nsay "b", MSGBOX_SIGN', [
+        {
+          command: 'say',
+          parameters: [
+            { type: 'string', value: 'a' }, 
+            { type: 'constant', value: 'MSGBOX_DEFAULT' },
+          ],
+        },
+        {
+          command: 'say',
+          parameters: [
+            { type: 'string', value: 'b' },
+            { type: 'constant', value: 'MSGBOX_SIGN' },
+          ],
+        },
+      ]);
+    });
+
+    test('does not bundle say when one msgbox is set and one is not (the one before)', () => {
+      expectParse('say "a"\nsay "b", MSGBOX_SIGN', [
+        {
+          command: 'say',
+          parameters: [
+            { type: 'string', value: 'a' },
+          ],
+        },
+        {
+          command: 'say',
+          parameters: [
+            { type: 'string', value: 'b' },
+            { type: 'constant', value: 'MSGBOX_SIGN' },
+          ],
+        },
+      ]);
+    });
+
+    test('does not bundle say when one msgbox is set and one is not (the one after)', () => {
+      expectParse('say "a", MSGBOX_DEFAULT\nsay "b"', [
+        {
+          command: 'say',
+          parameters: [
+            { type: 'string', value: 'a' },
+            { type: 'constant', value: 'MSGBOX_DEFAULT' },
+          ],
+        },
+        {
+          command: 'say',
+          parameters: [
+            { type: 'string', value: 'b' },
+          ],
+        },
+      ]);
+    });
+
     test('bunding two children of a parent command', () => {
       expectParse('x\n  say "yo"\n  say "meme"', [{
         command: 'x',

@@ -353,6 +353,34 @@ describe(Transpiler, () => {
           .string "asm"
       `);
     });
+
+    test('using_msgbox does not affect non-children', () => {
+      expectTranspileInsideScript([
+        {
+          command: 'using_msgbox',
+          parameters: [{ type: 'constant', value: 'MSGBOX_SIGN' }],
+          children: [{
+            command: 'say',
+            parameters: [{ type: 'string', value: 'asm' }],
+          }],
+        },
+        {
+          command: 'say',
+          parameters: [{ type: 'string', value: 'do not make this a sign' }],
+        },
+      ], `
+        TestScript::
+          msgbox _TestScript_Subscript_Text_0, MSGBOX_SIGN
+          msgbox _TestScript_Subscript_Text_1, MSGBOX_DEFAULT
+          end
+
+        _TestScript_Subscript_Text_0:
+          .string "asm"
+
+        _TestScript_Subscript_Text_1:
+          .string "do not make this a sign"
+      `);
+    });
   });
 
   describe('end', () => {

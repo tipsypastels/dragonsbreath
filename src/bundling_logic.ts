@@ -1,5 +1,6 @@
 import Line from "./line";
 import { Chain } from "./parser";
+import Say from "./builtin_commands/say";
 
 export const BUNDLING_KEY = '___bundle___';
 
@@ -33,6 +34,11 @@ function shouldBeBundled(lastLine: Line, currentLine: Line): boolean {
   // the last line is NOT currently a bundle
   } else {
     if (getBundlingIndex(lastLine.command) === getBundlingIndex(currentLine.command)) {
+      if (lastLine.command === 'say' && currentLine.command === 'say') {
+        // don't bundle different msgboxes together
+        return getSayCommandMsgbox(lastLine) === getSayCommandMsgbox(currentLine);
+      }
+
       return true;
     }
   }
@@ -56,4 +62,16 @@ export function tryBundleLines(lastLine: Line, currentLine: Line): boolean {
   }
 
   return true;
+}
+
+function getSayCommandMsgbox(line: Line): string {
+  if (line.command !== 'say') {
+    throw new TypeError('must be used with the say command');
+  }
+
+  if (!line.parameters || !line.parameters[1]) {
+    return undefined;
+  }
+
+  return line.parameters[1].value as string;
 }
