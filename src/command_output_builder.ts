@@ -3,7 +3,8 @@ import Script, { Subscript, SubscriptType, subscriptIsChildOfLine } from "./buil
 import Msgbox from "./msgbox";
 
 type Goto = 
-  | { type: 'code', if: string, lines?: string }
+  | { type: 'code', idx: number, style: 'switch', lines?: string }
+  | { type: 'code', if: string, lines?: string, style?: 'normal' }
   | { type: 'text', lines: string }
   | { type: 'movement', eventId: string, lines?: string };
 
@@ -34,13 +35,18 @@ export default class CommandOutputBuilder {
       const yieldedLines = (opts.lines || this.command.yield())
       .split('\n');
 
+      let finalType = opts.type;
       const subscriptName = Script.current
         .getSubscriptName(opts.type);
 
       let lineName;
       switch(opts.type) {
         case 'code': {
-          lineName = `goto_if_${opts.if} ${subscriptName}`;
+          if (opts.style === 'switch') {
+            lineName = `case ${opts.idx}, ${subscriptName}`;
+          } else {
+            lineName = `goto_if_${opts.if} ${subscriptName}`;
+          }
           break;
         };
         case 'text': {

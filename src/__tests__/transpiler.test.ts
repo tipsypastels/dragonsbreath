@@ -503,4 +503,106 @@ describe(Transpiler, () => {
       }]);
     });
   });
+
+  describe('choose_randomly', () => {
+    test('basic usage', () => {
+      expectTranspileInsideScript([{
+        command: 'choose_randomly',
+        children: [
+          {
+            command: 'option',
+            children: [{
+              command: 'say',
+              parameters: [{ type: 'string', value: 'option 1' }],
+            }],
+          },
+          {
+            command: 'option',
+            children: [{
+              command: 'say',
+              parameters: [{ type: 'string', value: 'option 2' }],
+            }],
+          },
+          {
+            command: 'option',
+            children: [{
+              command: 'say',
+              parameters: [{ type: 'string', value: 'option 3' }],
+            }],
+          },
+        ],
+      }], `
+        TestScript::
+          random 3
+          switch VAR_RESULT
+          case 0, _TestScript_Subscript_Code_1
+          case 1, _TestScript_Subscript_Code_3
+          case 2, _TestScript_Subscript_Code_5
+          end
+
+        _TestScript_Subscript_Text_0:
+          .string "option 1"
+
+        _TestScript_Subscript_Code_1::
+          msgbox _TestScript_Subscript_Text_0, MSGBOX_DEFAULT
+          end
+
+        _TestScript_Subscript_Text_2:
+          .string "option 2"
+
+        _TestScript_Subscript_Code_3::
+          msgbox _TestScript_Subscript_Text_2, MSGBOX_DEFAULT
+          end
+          
+        _TestScript_Subscript_Text_4:
+          .string "option 3"
+
+        _TestScript_Subscript_Code_5::
+          msgbox _TestScript_Subscript_Text_4, MSGBOX_DEFAULT
+          end
+      `);
+    });
+
+    test('cannot use choose_randomly with direct children', () => {
+      expectThrow([{ command: 'choose_randomly', children: [{ command: 'hello' }] }]);
+    });
+
+    test('cannot use option outside of choose_randomly', () => {
+      expectThrow([{ 
+        command: 'script', 
+        parameters: [{ type: 'token', name: 'X' }], 
+        children: [{ command: 'option' }],
+      }]);
+    });
+  });
+
+  describe('return', () => {
+    test('scripts dont add ends after returns', () => {
+      expectTranspileInsideScript([{ command: 'return' }], `
+        TestScript::
+          return
+      `);
+    });
+
+    test('subscripts dont add ends after returns', () => {
+      expectTranspileInsideScript([{
+        command: 'if',
+        parameters: [{ type: 'eq', value: {
+          left: { type: 'number', value: 1 },
+          right: { type: 'number', value: 2 },
+        } }],
+        children: [{
+          command: 'return'
+        }],
+      }], `
+        TestScript::
+          compare 1, 2
+          goto_if_eq _TestScript_Subscript_Code_0
+          end
+
+        _TestScript_Subscript_Code_0::
+          return
+      `);
+    });
+  });
 });

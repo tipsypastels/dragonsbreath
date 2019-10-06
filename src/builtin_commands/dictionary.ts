@@ -12,6 +12,8 @@ import MoveAndWait from './move_and_wait';
 import { BUNDLING_KEY } from '../bundling_logic';
 import ___Bundle___ from './___bundle___';
 import LockAll from './lockall';
+import ChooseRandomly from './choose_randomly';
+import Option from './option';
 
 const BUILTIN_COMMAND_DICT = {
   script: Script,
@@ -28,6 +30,8 @@ const BUILTIN_COMMAND_DICT = {
   givemon: GiveMon,
   move: Move,
   move_and_wait: MoveAndWait,
+  choose_randomly: ChooseRandomly,
+  option: Option,
   [BUNDLING_KEY]: ___Bundle___,
 }
 

@@ -47,13 +47,17 @@ export default class Script extends BuiltinCommand {
     this.output
       .addLine(`${this.parameters[0].value}::`)
       .yield()
-      .addLine('end');
+      .addLineIf(this.children[this.children.length - 1].command !== 'return', 'end');
 
     this.subscripts.forEach(subscript => {
+      const shouldAddEndAfter =
+        subscript.type === 'code'
+          && !subscript.texts[subscript.texts.length - 1].match(/^\s*return\s*$/);
+
       this.output
         .addLine(`${subscript.name}:${subscript.type === 'code' ? ':' : ''}`)
         .addLine(...subscript.texts)
-        .addLineIf(subscript.type === 'code', 'end')
+        .addLineIf(shouldAddEndAfter, 'end')
         .addLineIf(subscript.type === 'movement', 'step_end')
     }); 
   }
