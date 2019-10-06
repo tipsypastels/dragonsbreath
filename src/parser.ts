@@ -138,7 +138,7 @@ export function parseExpression(expr: string): Parameter {
       return { type: 'constant', value: expr };
     }
 
-    case matching(/^[a-z0-9]+$/i): {
+    case matching(/^[a-z0-9_]+$/i): {
       return { type: 'token', value: expr };
     }
 
