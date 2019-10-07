@@ -158,4 +158,65 @@ describe('integration tests', () => {
         .string "Anyways, go north.$"
     `);
   });
+
+  test('gnosis fat man', () => {
+    expectDragonsbreath(`
+      script YamakiTown_FatMan
+        lock
+          faceplayer
+          say "Did you know?$", MSGBOX_YESNO
+          if it is 1
+            say "What? I hadn't even told you yet!$"
+          else
+            choose_randomly
+              option
+                say "They said {COLOR CHARACTER_COLOR}Lord Jinhai{COLOR NO_COLOR} of the {COLOR CHARACTER_COLOR}Elite\\n"
+                say "Dynasty{COLOR NO_COLOR} built a robotic Pokémon!\\p"
+                say "How insane is that?! I love science!$"
+              option
+                say "I don't feel like talking right now...$"
+    `, `
+      YamakiTown_FatMan::
+        lock
+        faceplayer
+        msgbox _YamakiTown_FatMan_Subscript_Text_0, MSGBOX_YESNO
+        compare VAR_RESULT, 1
+        goto_if_eq _YamakiTown_FatMan_Subscript_Code_2
+        random 2
+        switch VAR_RESULT
+        case 0, _YamakiTown_FatMan_Subscript_Code_4
+        case 1, _YamakiTown_FatMan_Subscript_Code_6
+        release
+        end
+
+      _YamakiTown_FatMan_Subscript_Text_0:
+        .string "Did you know?$"
+
+      _YamakiTown_FatMan_Subscript_Text_1:
+        .string "What? I hadn't even told you yet!$"
+
+      _YamakiTown_FatMan_Subscript_Code_2::
+        msgbox _YamakiTown_FatMan_Subscript_Text_1, MSGBOX_DEFAULT
+        release
+        end
+
+      _YamakiTown_FatMan_Subscript_Text_3:
+        .string "They said {COLOR CHARACTER_COLOR}Lord Jinhai{COLOR NO_COLOR} of the {COLOR CHARACTER_COLOR}Elite\\n"
+        .string "Dynasty{COLOR NO_COLOR} built a robotic Pokémon!\\p"
+        .string "How insane is that?! I love science!$"
+
+      _YamakiTown_FatMan_Subscript_Code_4::
+        msgbox _YamakiTown_FatMan_Subscript_Text_3, MSGBOX_DEFAULT
+        release
+        end
+
+      _YamakiTown_FatMan_Subscript_Text_5:
+        .string "I don't feel like talking right now...$"
+
+      _YamakiTown_FatMan_Subscript_Code_6::
+        msgbox _YamakiTown_FatMan_Subscript_Text_5, MSGBOX_DEFAULT
+        release
+        end
+    `);
+  });
 });
