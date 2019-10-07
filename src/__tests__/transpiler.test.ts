@@ -354,6 +354,35 @@ describe(Transpiler, () => {
       `);
     });
 
+    test('manually setting the msgbox does not persist for subsequent says', () => {
+      expectTranspileInsideScript([
+        { 
+          command: 'say',
+          parameters: [
+            { type: 'string', value: 'hello' },
+            { type: 'constant', value: 'MSGBOX_SIGN' },
+          ],
+        }, 
+        {
+          command: 'say',
+          parameters: [
+            { type: 'string', value: 'goodbye' },
+          ],
+        },
+      ], `
+        TestScript::
+          msgbox _TestScript_Subscript_Text_0, MSGBOX_SIGN
+          msgbox _TestScript_Subscript_Text_1, MSGBOX_DEFAULT
+          end
+
+        _TestScript_Subscript_Text_0:
+          .string "hello"
+
+        _TestScript_Subscript_Text_1:
+          .string "goodbye"
+      `);
+    });
+
     test('using_msgbox does not affect non-children', () => {
       expectTranspileInsideScript([
         {

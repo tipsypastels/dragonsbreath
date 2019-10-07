@@ -6,10 +6,8 @@ export default class UsingMsgbox extends BuiltinCommand {
     this.assertChildren()
         .assertParams('constant');
 
-    Msgbox.current = this.parameters[0].value as string;
-    const result = this.yield();
-
-    Msgbox.current = 'MSGBOX_DEFAULT';
-    return result;
+    Msgbox.change(this.parameters[0].value as string, () => {
+      this.output.yield();
+    });
   }
 }

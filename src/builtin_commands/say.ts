@@ -6,13 +6,11 @@ export default class Say extends BuiltinCommand {
     this.assertParams('string', { optional: 'constant' });
     const [text, msgbox] = this.parameters;
 
-    if (msgbox) {
-      Msgbox.current = msgbox.value as string;
-    }
-
-    this.output.addGoto({ 
-      type: 'text', 
-      lines: `.string ${this.param(text)}`
+    Msgbox.change(msgbox && msgbox.value as string, () => {
+      this.output.addGoto({ 
+        type: 'text', 
+        lines: `.string ${this.param(text)}`
+      });
     });
   }
 }
