@@ -24,37 +24,37 @@ describe('integration tests', () => {
           if it is 6
             say "Ah, your party is full.$"
           else
-            givemon SPECIES_DRATINI, 5, ITEM_DRAGON_FANG, 0x0, 0x0, 0
+            givemon SPECIES_DRATINI, 5, ITEM_DRAGON_FANG
             playfanfare MUS_FANA4
             say "{PLAYER} received a Dratini!$"
             waitfanfare
     `, `
-      GivePokemonDemo::
+      GivePokemonDemo:: @ Dbr-output
         lock
         faceplayer
         msgbox _GivePokemonDemo_Subscript_Text_0, MSGBOX_DEFAULT
         getpartysize
         compare VAR_RESULT, 6
         goto_if_eq _GivePokemonDemo_Subscript_Code_2
-        givemon SPECIES_DRATINI, 5, ITEM_DRAGON_FANG, 0x0, 0x0, 0
+        givemon SPECIES_DRATINI, 5, ITEM_DRAGON_FANG
         playfanfare MUS_FANA4
         msgbox _GivePokemonDemo_Subscript_Text_3, MSGBOX_DEFAULT
         waitfanfare
         release
         end
 
-      _GivePokemonDemo_Subscript_Text_0:
+      _GivePokemonDemo_Subscript_Text_0: @ Dbr-output
         .string "Please take this Dratini!$"
 
-      _GivePokemonDemo_Subscript_Text_1:
+      _GivePokemonDemo_Subscript_Text_1: @ Dbr-output
         .string "Ah, your party is full.$"
 
-      _GivePokemonDemo_Subscript_Code_2::
+      _GivePokemonDemo_Subscript_Code_2:: @ Dbr-output
         msgbox _GivePokemonDemo_Subscript_Text_1, MSGBOX_DEFAULT
         release
         end
 
-      _GivePokemonDemo_Subscript_Text_3:
+      _GivePokemonDemo_Subscript_Text_3: @ Dbr-output
         .string "{PLAYER} received a Dratini!$"
     `);
   });
@@ -82,7 +82,7 @@ describe('integration tests', () => {
           faceplayer
           say "What do you think?$"
     `, `
-      MyLittleDance::
+      MyLittleDance:: @ Dbr-output
         lock
         faceplayer
         applymovement 1, _MyLittleDance_Subscript_Movement_0
@@ -97,27 +97,27 @@ describe('integration tests', () => {
         release
         end
 
-      _MyLittleDance_Subscript_Movement_0:
+      _MyLittleDance_Subscript_Movement_0: @ Dbr-output
         walk_up
         walk_right
         step_end
 
-      _MyLittleDance_Subscript_Movement_1:
+      _MyLittleDance_Subscript_Movement_1: @ Dbr-output
         walk_right
         walk_down
         step_end
 
-      _MyLittleDance_Subscript_Movement_2:
+      _MyLittleDance_Subscript_Movement_2: @ Dbr-output
         walk_down
         walk_left
         step_end
 
-      _MyLittleDance_Subscript_Movement_3:
+      _MyLittleDance_Subscript_Movement_3: @ Dbr-output
         walk_left
         walk_up
         step_end
 
-      _MyLittleDance_Subscript_Text_4:
+      _MyLittleDance_Subscript_Text_4: @ Dbr-output
         .string "What do you think?$"
     `);
   });
@@ -130,11 +130,11 @@ describe('integration tests', () => {
       script ScriptY
         say_goodbye
     `, `
-      ScriptX::
+      ScriptX:: @ Dbr-output
         say_hello
         end
 
-      ScriptY::
+      ScriptY:: @ Dbr-output
         say_goodbye
         end
     `);
@@ -148,11 +148,11 @@ describe('integration tests', () => {
           say "I am a sign.\\p"
           say "Anyways, go north.$"
     `, `
-      AFriendlySign::
+      AFriendlySign:: @ Dbr-output
         msgbox _AFriendlySign_Subscript_Text_0, MSGBOX_SIGN
         end
 
-      _AFriendlySign_Subscript_Text_0:
+      _AFriendlySign_Subscript_Text_0: @ Dbr-output
         .string "Hello!\\n"
         .string "I am a sign.\\p"
         .string "Anyways, go north.$"
@@ -170,13 +170,13 @@ describe('integration tests', () => {
           else
             choose_randomly
               option
-                say "They said {COLOR CHARACTER_COLOR}Lord Jinhai{COLOR NO_COLOR} of the {COLOR CHARACTER_COLOR}Elite\\n"
+                say "They said CHARACTER_COLOR(Lord Jinhai) of the {COLOR CHARACTER_COLOR}Elite\\n"
                 say "Dynasty{COLOR NO_COLOR} built a robotic Pokémon!\\p"
                 say "How insane is that?! I love science!$"
               option
                 say "I don't feel like talking right now...$"
     `, `
-      YamakiTown_FatMan::
+      YamakiTown_FatMan:: @ Dbr-output
         lock
         faceplayer
         msgbox _YamakiTown_FatMan_Subscript_Text_0, MSGBOX_YESNO
@@ -189,31 +189,31 @@ describe('integration tests', () => {
         release
         end
 
-      _YamakiTown_FatMan_Subscript_Text_0:
+      _YamakiTown_FatMan_Subscript_Text_0: @ Dbr-output
         .string "Did you know?$"
 
-      _YamakiTown_FatMan_Subscript_Text_1:
+      _YamakiTown_FatMan_Subscript_Text_1: @ Dbr-output
         .string "What? I hadn't even told you yet!$"
 
-      _YamakiTown_FatMan_Subscript_Code_2::
+      _YamakiTown_FatMan_Subscript_Code_2:: @ Dbr-output
         msgbox _YamakiTown_FatMan_Subscript_Text_1, MSGBOX_DEFAULT
         release
         end
 
-      _YamakiTown_FatMan_Subscript_Text_3:
+      _YamakiTown_FatMan_Subscript_Text_3: @ Dbr-output
         .string "They said {COLOR CHARACTER_COLOR}Lord Jinhai{COLOR NO_COLOR} of the {COLOR CHARACTER_COLOR}Elite\\n"
         .string "Dynasty{COLOR NO_COLOR} built a robotic Pokémon!\\p"
         .string "How insane is that?! I love science!$"
 
-      _YamakiTown_FatMan_Subscript_Code_4::
+      _YamakiTown_FatMan_Subscript_Code_4:: @ Dbr-output
         msgbox _YamakiTown_FatMan_Subscript_Text_3, MSGBOX_DEFAULT
         release
         end
 
-      _YamakiTown_FatMan_Subscript_Text_5:
+      _YamakiTown_FatMan_Subscript_Text_5: @ Dbr-output
         .string "I don't feel like talking right now...$"
 
-      _YamakiTown_FatMan_Subscript_Code_6::
+      _YamakiTown_FatMan_Subscript_Code_6:: @ Dbr-output
         msgbox _YamakiTown_FatMan_Subscript_Text_5, MSGBOX_DEFAULT
         release
         end

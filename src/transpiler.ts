@@ -1,5 +1,6 @@
 import Line, { Parameter } from "./line";
 import BUILTIN_COMMAND_DICT from "./builtin_commands/dictionary";
+import stringSubstitutions from "./string_substitutions";
 
 export default class Transpiler {
   transpile(lines: Line[], parentLine?: Line): string {
@@ -42,7 +43,7 @@ export default class Transpiler {
   transpileParameter(parameter: Parameter): string {
     switch(parameter.type) {
       case 'string': {
-        return `"${parameter.value}"`;
+        return stringSubstitutions(`"${parameter.value}"`);
       }
 
       case 'it': {

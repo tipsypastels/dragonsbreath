@@ -3,6 +3,8 @@ import Transpiler from "../transpiler";
 import Line, { lineIsDescendant } from "../line";
 import { capitalize } from "../utils";
 
+export const DRAGONSBREATH_SCRIPT_MAGIC_COMMENT = 'Dbr-output';
+
 export type SubscriptType = 'code' | 'text' | 'movement';
 
 export interface Subscript {
@@ -45,7 +47,7 @@ export default class Script extends BuiltinCommand {
         .assertParams('token');
 
     this.output
-      .addLine(`${this.parameters[0].value}::`)
+      .addLine(`${this.parameters[0].value}:: @ ${DRAGONSBREATH_SCRIPT_MAGIC_COMMENT}`)
       .yield()
       .addLineIf(this.children[this.children.length - 1].command !== 'return', 'end');
 
@@ -55,7 +57,7 @@ export default class Script extends BuiltinCommand {
           && !subscript.texts[subscript.texts.length - 1].match(/^\s*return\s*$/);
 
       this.output
-        .addLine(`${subscript.name}:${subscript.type === 'code' ? ':' : ''}`)
+        .addLine(`${subscript.name}:${subscript.type === 'code' ? ':' : ''} @ ${DRAGONSBREATH_SCRIPT_MAGIC_COMMENT}`)
         .addLine(...subscript.texts)
         .addLineIf(shouldAddEndAfter, 'end')
         .addLineIf(subscript.type === 'movement', 'step_end')

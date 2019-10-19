@@ -1,3 +1,5 @@
+import { DRAGONSBREATH_SCRIPT_MAGIC_COMMENT } from "./builtin_commands/script";
+
 export default class FileMerger {
   constructor(
     private existingScripts: string,
@@ -5,10 +7,17 @@ export default class FileMerger {
   ) {}
 
   merge() {
-    const all = { 
-      ...this.extractScriptsToObj(this.existingScripts),
-      ...this.extractScriptsToObj(this.newScripts),
-    };
+    const existingScripts = this.extractScriptsToObj(this.existingScripts);
+    const newScripts = this.extractScriptsToObj(this.newScripts);
+
+    let all = { ...existingScripts, ...newScripts };
+
+    // remove old dragonsbreath scripts that were removed in the incoming code
+    for (let scriptName in all) {
+      if (all[scriptName].includes(`@ ${DRAGONSBREATH_SCRIPT_MAGIC_COMMENT}`) && !newScripts[scriptName]) {
+        delete all[scriptName];
+      }
+    }
 
     const finalScript = Object.entries(all).map(([title, body]) => {
       return title + body;

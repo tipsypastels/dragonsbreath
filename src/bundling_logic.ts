@@ -7,7 +7,7 @@ export const BUNDLING_KEY = '___bundle___';
 export const BUNDLING_GROUPS = [
   // text commands
   [
-    'say',
+    'say', 'smart_say',
   ],
 ];
 

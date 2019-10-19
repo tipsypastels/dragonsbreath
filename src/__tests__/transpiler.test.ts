@@ -87,14 +87,14 @@ describe(Transpiler, () => {
           children: [{ command: 'hello' }],
         }],
       }], `
-        TestScript::
+        TestScript:: @ Dbr-output
           lock
           compare "a", "b"
           goto_if_eq _TestScript_Subscript_Code_0
           release
           end
 
-        _TestScript_Subscript_Code_0::
+        _TestScript_Subscript_Code_0:: @ Dbr-output
           hello
           release
           end
@@ -118,7 +118,7 @@ describe(Transpiler, () => {
           children: [{ command: 'hello3' }],
         }
       ], `
-        TestScript::
+        TestScript:: @ Dbr-output
           compare "a", "b"
           goto_if_eq _TestScript_Subscript_Code_0
           lock
@@ -128,11 +128,11 @@ describe(Transpiler, () => {
           goto_if_eq _TestScript_Subscript_Code_1
           end
 
-        _TestScript_Subscript_Code_0::
+        _TestScript_Subscript_Code_0:: @ Dbr-output
           hello
           end
           
-        _TestScript_Subscript_Code_1::
+        _TestScript_Subscript_Code_1:: @ Dbr-output
           hello3
           end
       `)
@@ -195,7 +195,7 @@ describe(Transpiler, () => {
         parameters: [{ type: 'token', value: 'MyScript' }],
         children: [{ command: 'xd' }],
       }], `
-        MyScript::
+        MyScript:: @ Dbr-output
           xd
           end
       `);
@@ -212,12 +212,12 @@ describe(Transpiler, () => {
         } }],
         children: [{ command: 'hello' }],
       }], `
-        TestScript::
+        TestScript:: @ Dbr-output
           compare "a", "b"
           goto_if_eq _TestScript_Subscript_Code_0
           end
 
-        _TestScript_Subscript_Code_0::
+        _TestScript_Subscript_Code_0:: @ Dbr-output
           hello
           end
       `);
@@ -235,12 +235,12 @@ describe(Transpiler, () => {
           children: [{ command: 'hello' }],
         }],
       }], `
-        TestScript::
+        TestScript:: @ Dbr-output
           compare "a", "b"
           goto_if_eq _TestScript_Subscript_Code_0
           end
 
-        _TestScript_Subscript_Code_0::
+        _TestScript_Subscript_Code_0:: @ Dbr-output
           lock
           hello
           release
@@ -281,7 +281,7 @@ describe(Transpiler, () => {
           }],
         },
       ], `
-        TestScript::
+        TestScript:: @ Dbr-output
           compare "a", "b"
           goto_if_eq _TestScript_Subscript_Code_0
           compare "a", "c"
@@ -289,13 +289,13 @@ describe(Transpiler, () => {
           lol
           end
 
-        _TestScript_Subscript_Code_0::
+        _TestScript_Subscript_Code_0:: @ Dbr-output
           lock
           hello
           release
           end
 
-        _TestScript_Subscript_Code_1::
+        _TestScript_Subscript_Code_1:: @ Dbr-output
           lock
           goodbye
           release
@@ -310,11 +310,11 @@ describe(Transpiler, () => {
         command: 'say',
         parameters: [{ type: 'string', value: 'asm' }],
       }], `
-        TestScript::
+        TestScript:: @ Dbr-output
           msgbox _TestScript_Subscript_Text_0, MSGBOX_DEFAULT
           end
           
-        _TestScript_Subscript_Text_0:
+        _TestScript_Subscript_Text_0: @ Dbr-output
           .string "asm"
       `);
     });
@@ -327,11 +327,11 @@ describe(Transpiler, () => {
           { type: 'constant', value: 'MSGBOX_SIGN' },
         ],
       }], `
-        TestScript::
+        TestScript:: @ Dbr-output
           msgbox _TestScript_Subscript_Text_0, MSGBOX_SIGN
           end
           
-        _TestScript_Subscript_Text_0:
+        _TestScript_Subscript_Text_0: @ Dbr-output
           .string "asm"
       `);
     });
@@ -345,11 +345,11 @@ describe(Transpiler, () => {
           parameters: [{ type: 'string', value: 'asm' }],
         }],
       }], `
-        TestScript::
+        TestScript:: @ Dbr-output
           msgbox _TestScript_Subscript_Text_0, MSGBOX_SIGN
           end
           
-        _TestScript_Subscript_Text_0:
+        _TestScript_Subscript_Text_0: @ Dbr-output
           .string "asm"
       `);
     });
@@ -370,15 +370,15 @@ describe(Transpiler, () => {
           ],
         },
       ], `
-        TestScript::
+        TestScript:: @ Dbr-output
           msgbox _TestScript_Subscript_Text_0, MSGBOX_SIGN
           msgbox _TestScript_Subscript_Text_1, MSGBOX_DEFAULT
           end
 
-        _TestScript_Subscript_Text_0:
+        _TestScript_Subscript_Text_0: @ Dbr-output
           .string "hello"
 
-        _TestScript_Subscript_Text_1:
+        _TestScript_Subscript_Text_1: @ Dbr-output
           .string "goodbye"
       `);
     });
@@ -398,15 +398,15 @@ describe(Transpiler, () => {
           parameters: [{ type: 'string', value: 'do not make this a sign' }],
         },
       ], `
-        TestScript::
+        TestScript:: @ Dbr-output
           msgbox _TestScript_Subscript_Text_0, MSGBOX_SIGN
           msgbox _TestScript_Subscript_Text_1, MSGBOX_DEFAULT
           end
 
-        _TestScript_Subscript_Text_0:
+        _TestScript_Subscript_Text_0: @ Dbr-output
           .string "asm"
 
-        _TestScript_Subscript_Text_1:
+        _TestScript_Subscript_Text_1: @ Dbr-output
           .string "do not make this a sign"
       `);
     });
@@ -426,21 +426,8 @@ describe(Transpiler, () => {
           { type: 'constant', value: 'PSYDUCK' },
           { type: 'number', value: 5 },
           { type: 'constant', value: 'ITEM_NONE' },
-          { type: 'constant', value: '0x0' },
-          { type: 'constant', value: '0x0' },
-          { type: 'number', value: 0 },
         ]
-      }], `givemon PSYDUCK, 5, ITEM_NONE, 0x0, 0x0, 0`);
-    });
-
-    test('with minimal parameters', () => {
-      expectTranspile([{
-        command: 'givemon',
-        parameters: [
-          { type: 'constant', value: 'PSYDUCK' },
-          { type: 'number', value: 5 },
-        ]
-      }], `givemon PSYDUCK, 5, ITEM_NONE, 0x0, 0x0, 0`);
+      }], `givemon PSYDUCK, 5, ITEM_NONE`);
     });
 
     test('with partial parameters', () => {
@@ -450,9 +437,8 @@ describe(Transpiler, () => {
           { type: 'constant', value: 'PSYDUCK' },
           { type: 'number', value: 5 },
           { type: 'constant', value: 'ITEM_NONE' },
-          { type: 'constant', value: '0x0' },
         ]
-      }], `givemon PSYDUCK, 5, ITEM_NONE, 0x0, 0x0, 0`);
+      }], `givemon PSYDUCK, 5, ITEM_NONE`);
     });
   });
 
@@ -466,11 +452,11 @@ describe(Transpiler, () => {
           { command: 'walk_down' }
         ]
       }], `
-        TestScript::
+        TestScript:: @ Dbr-output
           applymovement 1, _TestScript_Subscript_Movement_0
           end
 
-        _TestScript_Subscript_Movement_0:
+        _TestScript_Subscript_Movement_0: @ Dbr-output
           walk_up
           walk_down
           step_end
@@ -486,11 +472,11 @@ describe(Transpiler, () => {
           { command: 'walk_down' }
         ]
       }], `
-        TestScript::
+        TestScript:: @ Dbr-output
           applymovement EVENT_OBJ_ID_PLAYER, _TestScript_Subscript_Movement_0
           end
 
-        _TestScript_Subscript_Movement_0:
+        _TestScript_Subscript_Movement_0: @ Dbr-output
           walk_up
           walk_down
           step_end
@@ -510,12 +496,12 @@ describe(Transpiler, () => {
           { command: 'walk_down' }
         ]
       }], `
-        TestScript::
+        TestScript:: @ Dbr-output
           applymovement EVENT_OBJ_ID_PLAYER, _TestScript_Subscript_Movement_0
           waitmovement EVENT_OBJ_ID_PLAYER
           end
 
-        _TestScript_Subscript_Movement_0:
+        _TestScript_Subscript_Movement_0: @ Dbr-output
           walk_up
           walk_down
           step_end
@@ -561,7 +547,7 @@ describe(Transpiler, () => {
           },
         ],
       }], `
-        TestScript::
+        TestScript:: @ Dbr-output
           random 3
           switch VAR_RESULT
           case 0, _TestScript_Subscript_Code_1
@@ -569,24 +555,24 @@ describe(Transpiler, () => {
           case 2, _TestScript_Subscript_Code_5
           end
 
-        _TestScript_Subscript_Text_0:
+        _TestScript_Subscript_Text_0: @ Dbr-output
           .string "option 1"
 
-        _TestScript_Subscript_Code_1::
+        _TestScript_Subscript_Code_1:: @ Dbr-output
           msgbox _TestScript_Subscript_Text_0, MSGBOX_DEFAULT
           end
 
-        _TestScript_Subscript_Text_2:
+        _TestScript_Subscript_Text_2: @ Dbr-output
           .string "option 2"
 
-        _TestScript_Subscript_Code_3::
+        _TestScript_Subscript_Code_3:: @ Dbr-output
           msgbox _TestScript_Subscript_Text_2, MSGBOX_DEFAULT
           end
           
-        _TestScript_Subscript_Text_4:
+        _TestScript_Subscript_Text_4: @ Dbr-output
           .string "option 3"
 
-        _TestScript_Subscript_Code_5::
+        _TestScript_Subscript_Code_5:: @ Dbr-output
           msgbox _TestScript_Subscript_Text_4, MSGBOX_DEFAULT
           end
       `);
@@ -608,7 +594,7 @@ describe(Transpiler, () => {
   describe('return', () => {
     test('scripts dont add ends after returns', () => {
       expectTranspileInsideScript([{ command: 'return' }], `
-        TestScript::
+        TestScript:: @ Dbr-output
           return
       `);
     });
@@ -624,12 +610,12 @@ describe(Transpiler, () => {
           command: 'return'
         }],
       }], `
-        TestScript::
+        TestScript:: @ Dbr-output
           compare 1, 2
           goto_if_eq _TestScript_Subscript_Code_0
           end
 
-        _TestScript_Subscript_Code_0::
+        _TestScript_Subscript_Code_0:: @ Dbr-output
           return
       `);
     });
