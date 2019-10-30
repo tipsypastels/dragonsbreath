@@ -265,6 +265,12 @@ describe(parse, () => {
       }]);
     });
   });
+
+  // describe('comments', () => {
+  //   test('otherwise empty lines', () => {
+
+  //   });
+  // });
 });
 
 describe(parseExpression, () => {

@@ -1,6 +1,7 @@
 import BuiltinCommand from "./builtin_commands/builtin_command";
 import Script, { Subscript, SubscriptType, subscriptIsChildOfLine } from "./builtin_commands/script";
 import Msgbox from "./msgbox";
+import Line from "./line";
 
 type Goto = 
   | { type: 'code', idx: number, style: 'switch', lines?: string }
@@ -24,6 +25,19 @@ export default class CommandOutputBuilder {
     if (condition) {
       this.addLine(...lines);
     }
+    return this;
+  }
+
+  yieldEachLine(callback: (result: string, i: number, builder: this) => void) {
+    const { children, transpiler } = this.command;
+
+    for (let i = 0; i < children.length; i++) {
+      const result = transpiler
+        .transpile([children[i]], this.command.line);
+
+      callback(result, i, this);
+    }
+
     return this;
   }
 
@@ -88,6 +102,13 @@ export default class CommandOutputBuilder {
       });
     }
     
+    return this;
+  }
+
+  eachChild(callback: (child: Line, index: number, builder: this) => string) {
+    this.command.children.forEach((child, index) => {
+      callback(child, index, this);
+    });
     return this;
   }
 

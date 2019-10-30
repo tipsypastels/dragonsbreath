@@ -2,11 +2,23 @@ import BuiltinCommand from "./builtin_command";
 
 export default class MiscMovementCommand extends BuiltinCommand {
   render() {
+    this.assertParams({ optional: 'number' });
+
     if (!this.parentLine || ['move', 'move_and_wait'].indexOf(this.parentLine.command) === -1) {
       this.error('All movement commands must be children of the move command.');
     }
 
-    return this.transpiler.formatLineAsDelegated(this.line);
+    const repeats = this.parameters
+      ? this.parameters[0].value
+      : 1;
+
+    if (repeats < 1) {
+      this.error('Cannot repeat a movement command less than one time.');
+    }
+
+    for (let i = 0; i < repeats; i++) {
+      this.output.addLine(this.command);
+    }
   }
 
   static all = Object.freeze([

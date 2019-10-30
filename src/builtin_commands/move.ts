@@ -17,10 +17,20 @@ export default class Move extends BuiltinCommand {
   let [id] = this.parameters;
 
     if (id.type === 'token') {
-      if (id.value === 'player') {
-        id = { type: 'constant', value: 'EVENT_OBJ_ID_PLAYER' };
-      } else {
-        throw new SyntaxError('The parameter to the move command must be a number, a constant, or the token player');
+      switch(id.value) {
+        case 'player': {
+          id = { type: 'constant', value: 'EVENT_OBJ_ID_PLAYER' };
+          break;
+        }
+
+        case 'camera': {
+          id = { type: 'constant', value: 'EVENT_OBJ_ID_CAMERA' };
+          break;
+        }
+
+        default: {
+          throw new SyntaxError('The parameter to the move command must be a number, a constant, or the token player');
+        }
       }
     }
 

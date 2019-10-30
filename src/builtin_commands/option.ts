@@ -8,10 +8,6 @@ export default class Option extends BuiltinCommand {
       this.error('The option command must always be a direct child of the choose_randomly command');
     }
 
-    const idx = this.parentLine.children
-      .map(l => l.number)
-      .indexOf(this.line.number);
-
-    this.output.addGoto({ idx, type: 'code', style: 'switch', });
+    return this.yield();
   }
 }

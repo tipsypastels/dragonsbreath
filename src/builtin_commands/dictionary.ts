@@ -14,6 +14,10 @@ import ___Bundle___ from './___bundle___';
 import LockAll from './lockall';
 import ChooseRandomly from './choose_randomly';
 import Option from './option';
+import When from './when';
+import ShowPortrait from './showportrait';
+import SpawnCamera from './spawn_camera';
+import Ask from './ask';
 
 const BUILTIN_COMMAND_DICT = {
   script: Script,
@@ -32,6 +36,11 @@ const BUILTIN_COMMAND_DICT = {
   move_and_wait: MoveAndWait,
   choose_randomly: ChooseRandomly,
   option: Option,
+  when: When,
+  showportrait: ShowPortrait,
+  showplayerportrait: ShowPortrait,
+  spawncamera: SpawnCamera,
+  ask: Ask,
   [BUNDLING_KEY]: ___Bundle___,
 }
 

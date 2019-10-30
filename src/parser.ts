@@ -1,6 +1,5 @@
 import Line, { Parameter } from "./line";
 import { tryBundleLines } from "./bundling_logic";
-import { dig } from "./utils";
 
 export const INDENT = '  ';
 

@@ -15,7 +15,7 @@ export default abstract class BuiltinCommand {
   constructor(
     public line: Line,
     public parentLine: Line,
-    protected transpiler: Transpiler,
+    public transpiler: Transpiler,
   ) {
     this.output = new CommandOutputBuilder(this);
   }

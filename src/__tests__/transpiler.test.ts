@@ -524,6 +524,37 @@ describe(Transpiler, () => {
       expectTranspileInsideScript([{
         command: 'choose_randomly',
         children: [
+          { command: 'x' },
+          { command: 'y' },
+          { command: 'z' },
+        ]
+      }], `
+        TestScript:: @ Dbr-output
+          random 3
+          switch VAR_RESULT
+          case 0, _TestScript_Subscript_Code_0
+          case 1, _TestScript_Subscript_Code_1
+          case 2, _TestScript_Subscript_Code_2
+          end
+
+        _TestScript_Subscript_Code_0:: @ Dbr-output
+          x
+          end
+
+        _TestScript_Subscript_Code_1:: @ Dbr-output
+          y
+          end
+
+        _TestScript_Subscript_Code_2:: @ Dbr-output
+          z
+          end
+      `)
+    });
+
+    test('use with options', () => {
+      expectTranspileInsideScript([{
+        command: 'choose_randomly',
+        children: [
           {
             command: 'option',
             children: [{
@@ -578,9 +609,43 @@ describe(Transpiler, () => {
       `);
     });
 
-    test('cannot use choose_randomly with direct children', () => {
-      expectThrow([{ command: 'choose_randomly', children: [{ command: 'hello' }] }]);
-    });
+    test('mixing raw and option', () => {
+      expectTranspileInsideScript([{
+        command: 'choose_randomly',
+        children: [
+          { command: 'x' },
+          { command: 'y' },
+          { 
+            command: 'option',
+            children: [
+              { command: 'a' },
+              { command: 'b' }, 
+            ],
+          },
+        ],
+      }], `
+        TestScript:: @ Dbr-output
+          random 3
+          switch VAR_RESULT
+          case 0, _TestScript_Subscript_Code_0
+          case 1, _TestScript_Subscript_Code_1
+          case 2, _TestScript_Subscript_Code_2
+          end
+
+        _TestScript_Subscript_Code_0:: @ Dbr-output
+          x
+          end
+
+        _TestScript_Subscript_Code_1:: @ Dbr-output
+          y
+          end
+
+        _TestScript_Subscript_Code_2:: @ Dbr-output
+          a
+          b
+          end
+      `)
+    })
 
     test('cannot use option outside of choose_randomly', () => {
       expectThrow([{ 
@@ -619,5 +684,147 @@ describe(Transpiler, () => {
           return
       `);
     });
+  });
+
+  describe('when', () => {
+    test('when X', () => {
+      expectTranspileInsideScript([{
+        command: 'when',
+        parameters: [{ type: 'number', value: 1 }],
+        children: [{
+          command: 'x',
+        }]
+      }], `
+        TestScript:: @ Dbr-output
+          compare VAR_RESULT, 1
+          goto_if_eq _TestScript_Subscript_Code_0
+          end
+
+        _TestScript_Subscript_Code_0:: @ Dbr-output
+          x
+          end
+      `);
+    });
+  });
+
+  describe('showportrait', () => {
+    test('without children', () => {
+      expectTranspile([{
+        command: 'showportrait',
+        parameters: [
+          { type: 'constant', value: 'PORTRAIT_MEILI' },
+          { type: 'constant', value: 'PORTRAIT_SMILE' },
+        ]
+      }], `
+        showportrait PORTRAIT_MEILI, PORTRAIT_SMILE
+      `);
+    });
+
+    test('with children', () => {
+      expectTranspile([{
+        command: 'showportrait',
+        parameters: [
+          { type: 'constant', value: 'PORTRAIT_MEILI' },
+          { type: 'constant', value: 'PORTRAIT_SMILE' },
+        ],
+        children: [{ command: 'x' }],
+      }], `
+        showportrait PORTRAIT_MEILI, PORTRAIT_SMILE
+        x
+        hideportrait
+      `);
+    });
+  });
+
+  describe('spawncamera', () => {
+    test('basic usage', () => {
+      expectTranspileInsideScript([{
+        command: 'spawncamera',
+        children: [{
+          command: 'move',
+          parameters: [{ type: 'token', value: 'camera' }],
+          children: [{ 
+            command: 'walk_up', 
+            parameters: [{ type: 'number', value: 2 }] 
+          }],
+        }],
+      }], `
+        TestScript:: @ Dbr-output
+          special SpawnCameraObject
+          applymovement EVENT_OBJ_ID_CAMERA, _TestScript_Subscript_Movement_0
+          special RemoveCameraObject
+          end
+
+        _TestScript_Subscript_Movement_0: @ Dbr-output
+          walk_up
+          walk_up
+          step_end
+      `);
+    });
+  });
+
+  describe('misc movement commands', () => {
+    test('can be used without specifying numbers', () => {
+      expectTranspileInsideScript([{
+        command: 'move',
+        parameters: [{ type: 'token', value: 'player' }],
+        children: [{ command: 'walk_up' }],
+      }], `
+        TestScript:: @ Dbr-output
+          applymovement EVENT_OBJ_ID_PLAYER, _TestScript_Subscript_Movement_0
+          end
+          
+        _TestScript_Subscript_Movement_0: @ Dbr-output
+          walk_up
+          step_end
+      `);
+    });
+
+    test('can be used by specifying numbers', () => {
+      expectTranspileInsideScript([{
+        command: 'move',
+        parameters: [{ type: 'token', value: 'player' }],
+        children: [{ 
+          command: 'walk_up',
+          parameters: [{ type: 'number', value: 2 }],
+        }],
+      }], `
+        TestScript:: @ Dbr-output
+          applymovement EVENT_OBJ_ID_PLAYER, _TestScript_Subscript_Movement_0
+          end
+          
+        _TestScript_Subscript_Movement_0: @ Dbr-output
+          walk_up
+          walk_up
+          step_end
+      `);
+    });
+
+    test('cannot use zero or negatives', () => {
+      expectThrow([{
+        command: 'move',
+        parameters: [{ type: 'token', value: 'player' }],
+        children: [{
+          command: 'walk_up',
+          parameters: [{ type: 'number', value: 0 }],
+        }],
+      }]);
+    });
+  });
+
+  describe('ask', () => {
+    test('ask', () => {
+      expectTranspileInsideScript([{
+        command: 'ask',
+        parameters: [{ type: 'string', value: 'What town are you from?$' }],
+      }], `
+        TestScript:: @ Dbr-output
+          msgbox _TestScript_Subscript_Text_0, MSGBOX_YESNO
+          end
+
+        _TestScript_Subscript_Text_0: @ Dbr-output
+          .string "What town are you from?$"
+      `)
+    })
   });
 });
