@@ -1,6 +1,6 @@
 # Dragonsbreath
 
-*(Note that this project is still in a very early stage. It should be usable, and early adopter feedback would be lovely)*
+**This project is no longer under active development as I don't have a need for it anymore.** Feel free to fork and make further changes if it fits your use case!
 
 ## Installation
 
